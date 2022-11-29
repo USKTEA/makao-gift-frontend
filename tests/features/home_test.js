@@ -8,8 +8,7 @@ Scenario('사용자가 페이지에 접속했을 경우', ({ I }) => {
 });
 
 Scenario('사용자가 로그인했을 경우', ({ I }) => {
-  I.setUpdatabase();
-
+  I.setUpUser();
   I.login('ashal1234');
 
   I.see(/내 잔액/);
@@ -17,7 +16,7 @@ Scenario('사용자가 로그인했을 경우', ({ I }) => {
 });
 
 Scenario('사용자가 로그아웃했을 경우', ({ I }) => {
-  I.setUpdatabase();
+  I.setUpUser();
 
   I.login('ashal1234');
 

@@ -1,10 +1,16 @@
 // in this file you can append custom step methods to 'I' object
 
-module.exports = function() {
+module.exports = function () {
   return actor({
 
-    // Define custom steps here, use 'this' to access default methods of I.
-    // It is recommended to place a general 'login' function here.
+    // setUpAccount()
+    // setUpProducts(int)
+    // setUpProduct(..상품 정보)
+
+    // login(id)
+    // changeAmount(int)
+    // setUpOrder('productName:''')
+    // setUpOrders(int)
 
   });
-}
+};
