@@ -2,6 +2,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: [
     '@testing-library/jest-dom/extend-expect',
+    './src/jest.setup',
   ],
   transform: {
     '^.+\\.jsx?$': ['@swc/jest', {
@@ -16,5 +17,8 @@ module.exports = {
         },
       },
     }],
+  },
+  moduleNameMapper: {
+    '.+\\.(css|style|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'identity-obj-proxy',
   },
 };
