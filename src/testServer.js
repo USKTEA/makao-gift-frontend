@@ -19,6 +19,22 @@ const server = setupServer(
       },
     ],
   }))),
+
+  rest.get(`${baseUrl}/products/1`, async (req, res, ctx) => res(ctx.json({
+    id: 1,
+    name: '초콜릿',
+    manufacturer: 'Jocker',
+    price: 10000,
+    description: 'yammy chocolate',
+  }))),
+
+  rest.get(`${baseUrl}/products/2`, async (req, res, ctx) => res(ctx.json({
+    id: 2,
+    name: '사탕',
+    manufacturer: 'Jocker',
+    price: 20000,
+    description: 'yammy candy',
+  }))),
 );
 
 export default server;

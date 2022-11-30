@@ -1,16 +1,38 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 
 import ProductDetailPage from './ProductDetailPage';
 
-test('ProductDetailPage', () => {
-  render(<ProductDetailPage />);
+const context = describe;
 
-  screen.getByAltText('상품이미지');
+describe('ProductDetailPage', () => {
+  context('when pathname is /product/1', () => {
+    it('show product detail which id is 1', async () => {
+      render(
+        <MemoryRouter initialEntries={[{ pathname: '/products/1' }]}>
+          <ProductDetailPage />
+        </MemoryRouter>,
+      );
 
-  screen.getByText('초콜릿');
-  screen.getByText('제조사');
-  screen.getByText('구매수량');
-  screen.getByText('상품설명');
-  screen.getByText('총 상품금액:');
-  screen.getByRole('button', { name: '선물하기' });
+      await waitFor(() => {
+        screen.getByAltText('상품이미지');
+        screen.getByText('초콜릿');
+      });
+    });
+  });
+
+  context('when pathname is /product/2', () => {
+    it('show product detail which id is 2', async () => {
+      render(
+        <MemoryRouter initialEntries={[{ pathname: '/products/2' }]}>
+          <ProductDetailPage />
+        </MemoryRouter>,
+      );
+
+      await waitFor(() => {
+        screen.getByAltText('상품이미지');
+        screen.getByText('사탕');
+      });
+    });
+  });
 });
