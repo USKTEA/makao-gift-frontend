@@ -1,9 +1,33 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+import useProductStore from '../hooks/useProductStore';
+
+import numberFormat from '../utils/numberFormat';
+
 export default function ProductDetailPage() {
+  const location = useLocation();
+  const { pathname } = location;
+
+  const id = pathname.slice(pathname.lastIndexOf('/') + 1);
+
+  const productStore = useProductStore();
+
+  useEffect(() => {
+    productStore.fetchProduct(id);
+  }, []);
+
+  const { selected } = productStore;
+
   return (
     <div>
       <img src="" alt="상품이미지" />
-      <p>초콜릿</p>
-      <p>10,000원</p>
+      <p>{selected.name}</p>
+      <p>
+        {
+          `${numberFormat(selected.price)}원`
+        }
+      </p>
       <table>
         <tbody>
           <tr>
@@ -11,7 +35,7 @@ export default function ProductDetailPage() {
               제조사
             </td>
             <td>
-              제조사명
+              {selected.manufacturer}
             </td>
           </tr>
           <tr>
@@ -26,7 +50,7 @@ export default function ProductDetailPage() {
           </tr>
           <tr>
             <td>상품설명</td>
-            <td>이 상품은 이러합니다</td>
+            <td>{selected.description}</td>
           </tr>
         </tbody>
       </table>
