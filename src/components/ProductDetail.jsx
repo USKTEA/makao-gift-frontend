@@ -46,7 +46,7 @@ export default function ProductDetail() {
         <span>
           총 상품금액:
           {' '}
-          <strong>10,000원</strong>
+          <strong>{selected.price}</strong>
         </span>
       </div>
       <div>

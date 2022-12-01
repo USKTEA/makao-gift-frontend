@@ -21,6 +21,20 @@ export default class ApiService {
 
     return data;
   }
+
+  async postSession({ memberName, password }) {
+    const url = `${baseUrl}/session`;
+
+    const { data } = await axios.post(url, {
+      memberName, password,
+    });
+
+    return {
+      accessToken: data.accessToken,
+      name: data.name,
+      amount: data.amount,
+    };
+  }
 }
 
 export const apiService = new ApiService();

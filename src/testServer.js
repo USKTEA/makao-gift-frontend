@@ -39,6 +39,24 @@ const server = setupServer(
     description: 'yammy candy',
     imageUrl: 2,
   }))),
+
+  rest.post(`${baseUrl}/session`, async (req, res, ctx) => {
+    const { memberName, password } = await req.json();
+
+    if (memberName === 'ashal1234' && password === 'Password1234!') {
+      return res(
+        ctx.json({
+          name: '김이박최아샬',
+          amount: 50_000,
+          accessToken: 'ACCESSTOKEN',
+        }),
+      );
+    }
+
+    return rest(
+      ctx.status(400),
+    );
+  }),
 );
 
 export default server;
