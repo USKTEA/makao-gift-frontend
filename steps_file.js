@@ -1,18 +1,36 @@
-// in this file you can append custom step methods to 'I' object
+/* eslint-disable no-undef */
 
-module.exports = function () {
-  return actor({
+const backdoorBaseUrl = 'http://localhost:8000/backdoor';
 
-    // setUpAccount()
+module.exports = () => actor({
+  async setUpProducts(amount) {
+    const products = Array
+      .from({ length: amount }, (_, index) => index + 1)
+      .reduce((acc, number) => [...acc, {
+        id: number,
+        name: `상품${number}`,
+        manufacturer: 'test',
+        price: 10000,
+        description: `${number}번째 상품`,
+        imageUrl: number,
+      }], []);
 
-    // setUpProducts(int)
-    // setUpProduct(..상품 정보)
+    await this.sendPostRequest('/setup-products', {
+      products,
+    });
+  },
+  async clearDatabase() {
+    await this.sendDeleteRequest('/setup-products');
+  },
+  // setUpAccount()
 
-    // login(id)
-    // changeAmount(int)
+  // setUpProducts(int)
+  // setUpProduct(..상품 정보)
 
-    // setUpOrder('productName:''')
-    // setUpOrders(int)
+  // login(id)
+  // changeAmount(int)
 
-  });
-};
+  // setUpOrder('productName:''')
+  // setUpOrders(int)
+
+});

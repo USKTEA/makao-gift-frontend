@@ -6,13 +6,12 @@ import config from '../config';
 const baseUrl = config.apiBaseUrl;
 
 export default class ApiService {
-  async fetchProducts() {
-    const url = `${baseUrl}/products`;
+  async fetchProducts(number) {
+    const url = `${baseUrl}/products?page=${number}`;
 
     const { data } = await axios.get(url);
-    const { products } = data;
 
-    return products;
+    return data;
   }
 
   async fetchProduct(id) {

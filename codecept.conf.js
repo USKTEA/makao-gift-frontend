@@ -16,6 +16,10 @@ exports.config = {
       show: true,
       browser: 'chromium',
     },
+    REST: {
+      endpoint: 'http://localhost:8000/backdoor',
+      prettyPrintJson: true,
+    },
   },
   include: {
     I: './steps_file.js',
