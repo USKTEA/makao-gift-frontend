@@ -1,8 +1,16 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useLocalStorage } from 'usehooks-ts';
+import useMemberStore from '../hooks/useMemberStore';
+import numberFormat from '../utils/numberFormat';
 
 const Container = styled.header`
+  display: flex;
+
   nav {
+    display: flex;
+
     ul {
       display: flex;
       list-style: none;
@@ -15,9 +23,23 @@ const Container = styled.header`
 `;
 
 export default function Header() {
+  const navigate = useNavigate();
+
+  const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
+
+  const memberStore = useMemberStore();
+
+  const { amount } = memberStore;
+
+  const handleLogout = () => {
+    setAccessToken('');
+    navigate('/');
+  };
+
   return (
     <Container>
       <nav>
+        <h2>선물하기</h2>
         <ul>
           <div>
             <li>
@@ -34,18 +56,46 @@ export default function Header() {
               <Link to="/orders">주문조회</Link>
             </li>
           </div>
-          <div>
-            <li>
-              <Link to="/signup">회원가입</Link>
-            </li>
-          </div>
-          <div>
-            <li>
-              <Link to="/login">로그인</Link>
-            </li>
-          </div>
         </ul>
       </nav>
+      {accessToken
+        ? (
+          <nav>
+            <ul>
+              <div>
+                <li>
+                  <p>{`내 잔액: ${numberFormat(amount)}원`}</p>
+                </li>
+              </div>
+              <div>
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => handleLogout()}
+                  >
+                    로그아웃
+                  </button>
+                </li>
+              </div>
+            </ul>
+          </nav>
+        )
+        : (
+          <nav>
+            <ul>
+              <div>
+                <li>
+                  <Link to="/signup">회원가입</Link>
+                </li>
+              </div>
+              <div>
+                <li>
+                  <Link to="/login">로그인</Link>
+                </li>
+              </div>
+            </ul>
+          </nav>
+        ) }
     </Container>
   );
 }
