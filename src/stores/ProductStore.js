@@ -4,12 +4,15 @@ export default class ProductStore {
   constructor() {
     this.products = [];
     this.selected = '';
-
+    this.page = '';
     this.listeners = new Set();
   }
 
-  async fetchProducts() {
-    this.products = await apiService.fetchProducts();
+  async fetchProducts(pageNumber = '') {
+    const { products, page } = await apiService.fetchProducts(pageNumber);
+
+    this.products = products;
+    this.page = page;
 
     this.publish();
   }

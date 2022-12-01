@@ -1,12 +1,25 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import useProductStore from '../hooks/useProductStore';
 
 import numberFormat from '../utils/numberFormat';
 
 export default function Products() {
+  const location = useLocation();
+
   const productStore = useProductStore();
 
-  const { products } = productStore;
+  const { products, page } = productStore;
+
+  const { total, current } = page;
+
+  useEffect(() => {
+    const pivot = location.search.split('').indexOf('=');
+
+    const pageNumber = location.search.split('').slice(pivot + 1).join('');
+
+    productStore.fetchProducts(pageNumber);
+  }, [location.search]);
 
   return (
     <>
@@ -16,7 +29,7 @@ export default function Products() {
           <li key={product.id}>
             <Link to={`products/${product.id}`}>
               <div>
-                <img src={product.image} alt="상품사진" />
+                <img src={product.imageUrl} alt="상품사진" />
               </div>
               <span>{product.manufacturer}</span>
               <p>{product.name}</p>
@@ -31,14 +44,17 @@ export default function Products() {
       </ul>
       <nav>
         <ul>
-          <li>
-            <Link
-              to="/products?page=1"
-              className="page-number"
-            >
-              1
-            </Link>
-          </li>
+          {Array.from({ length: total }, (_, number) => number + 1)
+            .map((number) => (
+              <li key={number}>
+                <Link
+                  to={`/products?page=${number}`}
+                  className="page-number"
+                >
+                  {number}
+                </Link>
+              </li>
+            ))}
         </ul>
       </nav>
     </>

@@ -11,8 +11,14 @@ jest.mock('../hooks/useProductStore', () => () => ({
       manufacturer: 'Jocker',
       price: 10000,
       description: 'yammy chocolate',
+      imageUrl: 1,
     },
   ],
+  page: {
+    current: 1,
+    total: 1,
+  },
+  fetchProducts: jest.fn(),
 }));
 
 test('Products', () => {

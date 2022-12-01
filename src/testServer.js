@@ -17,6 +17,7 @@ const server = setupServer(
         manufacturer: 'Jocker',
         price: 10000,
         description: 'yammy chocolate',
+        imageUrl: 1,
       },
     ],
   }))),
@@ -27,6 +28,7 @@ const server = setupServer(
     manufacturer: 'Jocker',
     price: 10000,
     description: 'yammy chocolate',
+    imageUrl: 1,
   }))),
 
   rest.get(`${baseUrl}/products/2`, async (req, res, ctx) => res(ctx.json({
@@ -35,6 +37,7 @@ const server = setupServer(
     manufacturer: 'Jocker',
     price: 20000,
     description: 'yammy candy',
+    imageUrl: 2,
   }))),
 );
 

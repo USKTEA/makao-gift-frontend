@@ -8,6 +8,7 @@ Before(({ I }) => {
       price: 10000,
       description: 'yammy chocolate',
       manufacturer: 'Jocker',
+      imageUrl: 1,
     },
   );
 });
