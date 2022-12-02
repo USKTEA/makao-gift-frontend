@@ -57,6 +57,15 @@ const server = setupServer(
       ctx.status(400),
     );
   }),
+
+  rest.get(`${baseUrl}/members/me`, async (req, res, ctx) => res(
+    ctx.json(
+      {
+        name: '김이박최아샬',
+        amount: 50_000,
+      },
+    ),
+  )),
 );
 
 export default server;

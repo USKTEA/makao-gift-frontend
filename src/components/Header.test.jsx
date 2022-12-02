@@ -1,4 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  fireEvent, render, screen,
+} from '@testing-library/react';
 
 import Header from './Header';
 
@@ -38,7 +40,7 @@ describe('Header', () => {
     });
 
     context('when click 로그아웃', () => {
-      it('render account 잔액 and 로그아웃', () => {
+      it('render 로그아웃', () => {
         renderHeader();
 
         fireEvent.click(screen.getByRole('button', { name: '로그아웃' }));
