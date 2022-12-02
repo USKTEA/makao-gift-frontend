@@ -22,6 +22,9 @@ module.exports = () => actor({
   async clearDatabase() {
     await this.sendDeleteRequest('/setup-products');
   },
+  async setUpUser() {
+    await this.sendPostRequest('/setup-user');
+  },
   // setUpAccount()
 
   // setUpProducts(int)
