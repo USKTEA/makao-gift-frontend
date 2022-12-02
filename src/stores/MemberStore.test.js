@@ -43,6 +43,15 @@ describe('MemberStore', () => {
       });
     });
   });
+
+  describe('fetchMember', () => {
+    it('load member information', async () => {
+      await memberStore.fetchMember();
+
+      expect(memberStore.name).toBe('김이박최아샬');
+      expect(memberStore.amount).toBe(50_000);
+    });
+  });
 });
 
 // 예외처리 필요함

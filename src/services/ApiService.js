@@ -6,6 +6,14 @@ import config from '../config';
 const baseUrl = config.apiBaseUrl;
 
 export default class ApiService {
+  constructor() {
+    this.accessToken = '';
+  }
+
+  setAccessToken(accessToken) {
+    this.accessToken = accessToken;
+  }
+
   async fetchProducts(number) {
     const url = `${baseUrl}/products?page=${number}`;
 
@@ -31,6 +39,21 @@ export default class ApiService {
 
     return {
       accessToken: data.accessToken,
+      name: data.name,
+      amount: data.amount,
+    };
+  }
+
+  async fetchMember() {
+    const url = `${baseUrl}/members/me`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return {
       name: data.name,
       amount: data.amount,
     };

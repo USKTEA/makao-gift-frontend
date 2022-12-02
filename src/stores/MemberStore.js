@@ -25,6 +25,15 @@ export default class MemberStore {
     }
   }
 
+  async fetchMember() {
+    const { name, amount } = await apiService.fetchMember();
+
+    this.name = name;
+    this.amount = amount;
+
+    this.publish();
+  }
+
   subscribe(listener) {
     this.listeners.add(listener);
   }

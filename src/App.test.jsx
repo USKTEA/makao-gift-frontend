@@ -4,7 +4,7 @@ import App from './App';
 
 test('App', () => {
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={['/']}>
       <App />
     </MemoryRouter>,
   );
