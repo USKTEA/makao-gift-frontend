@@ -1,6 +1,20 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useMemberStore from '../hooks/useMemberStore';
+
 export default function SignUpPage() {
+  const memberStore = useMemberStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (memberStore.isLoggedIn()) {
+      navigate('/');
+    }
+  }, []);
+  // 이거 테스트 작성해야함
+
   return (
     <>
       <h2>SIGN UP</h2>

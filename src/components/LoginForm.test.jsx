@@ -28,6 +28,6 @@ test('LoginForm', async () => {
   fireEvent.click(screen.getByRole('button', { name: '로그인하기' }));
 
   await waitFor(() => {
-    expect(navigate).toBeCalledWith('/');
+    expect(navigate).toBeCalledWith(-1);
   });
 });

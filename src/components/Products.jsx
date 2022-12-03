@@ -16,9 +16,14 @@ export default function Products() {
   const { total, current } = page;
 
   useEffect(() => {
-    const pivot = location.search.split('').indexOf('=');
+    const pivot = location.search
+      .split('')
+      .indexOf('=');
 
-    const pageNumber = location.search.split('').slice(pivot + 1).join('');
+    const pageNumber = location.search
+      .split('')
+      .slice(pivot + 1)
+      .join('');
 
     productStore.fetchProducts(pageNumber);
   }, [location.search]);
@@ -29,7 +34,7 @@ export default function Products() {
       <ul>
         {products.map((product) => (
           <li key={product.id}>
-            <Link to={`${product.id}`}>
+            <Link to={`${product.id}`} className="product">
               <div>
                 <img src={product.imageUrl} alt="상품사진" />
               </div>

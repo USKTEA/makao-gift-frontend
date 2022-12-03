@@ -28,14 +28,14 @@ nav {
 export default function Header() {
   const memberStore = useMemberStore();
 
-  const { amount } = memberStore;
-
   const navigate = useNavigate();
 
   const [accessToken, setAccessToken] = useLocalStorage('accessToken', '');
 
   const handleLogout = () => {
     setAccessToken('');
+    memberStore.clear();
+
     navigate('/');
   };
 
@@ -67,7 +67,7 @@ export default function Header() {
             <ul>
               <div>
                 <li>
-                  <p>{`내 잔액: ${numberFormat(amount)}원`}</p>
+                  <p>{`내 잔액: ${numberFormat(memberStore.amount())}원`}</p>
                 </li>
               </div>
               <div>
