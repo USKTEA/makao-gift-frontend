@@ -19,11 +19,35 @@ module.exports = () => actor({
       products,
     });
   },
+  async setUpProduct({
+    id, name, price, description, manufacturer, imageUrl,
+  }) {
+    await this.sendPostRequest('/setup-product', {
+      id, name, price, description, manufacturer, imageUrl,
+    });
+  },
   async clearDatabase() {
     await this.sendDeleteRequest('/setup-products');
   },
   async setUpUser() {
     await this.sendPostRequest('/setup-user');
+  },
+  login(userName) {
+    this.amOnPage('/');
+    this.amOnPage('/login');
+
+    this.fillField('아이디', userName);
+    this.fillField('비밀번호', 'Password1234!');
+    this.click('로그인하기');
+
+    this.waitForText('로그아웃');
+  },
+  changeAmount({ memberId, amount }) {
+    this.amOnPage([
+      `${backdoorBaseUrl}/change-amount?`,
+      `memberId=${memberId}&amount=${amount}`,
+    ].join(''));
+    this.amOnPage('/');
   },
   // setUpAccount()
 

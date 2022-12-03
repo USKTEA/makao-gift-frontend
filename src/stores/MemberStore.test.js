@@ -16,8 +16,9 @@ describe('MemberStore', () => {
           { memberName: 'ashal1234', password: 'Password1234!' },
         );
 
-        expect(memberStore.name).toBe('김이박최아샬');
-        expect(memberStore.amount).toBe(50_000);
+        expect(memberStore.memberName()).toBe('ashal1234');
+        expect(memberStore.name()).toBe('김이박최아샬');
+        expect(memberStore.amount()).toBe(50_000);
       });
     });
 
@@ -27,8 +28,9 @@ describe('MemberStore', () => {
           { memberName: 'xxx', password: 'Password1234!' },
         );
 
-        expect(memberStore.name).toBeFalsy();
-        expect(memberStore.amount).toBe(0);
+        const { member } = memberStore;
+
+        expect(member).toBeFalsy();
       });
     });
 
@@ -38,8 +40,25 @@ describe('MemberStore', () => {
           { memberName: 'ashal1234', password: 'xxx' },
         );
 
-        expect(memberStore.name).toBeFalsy();
-        expect(memberStore.amount).toBe(0);
+        const { member } = memberStore;
+
+        expect(member).toBeFalsy();
+      });
+    });
+  });
+
+  describe('logout', () => {
+    context('when logout', () => {
+      it('clear member information', async () => {
+        await memberStore.login(
+          { memberName: 'ashal1234', password: 'Password1234!' },
+        );
+
+        expect(memberStore.member).toBeTruthy();
+
+        memberStore.clear();
+
+        expect(memberStore.member).toBeFalsy();
       });
     });
   });
@@ -48,8 +67,25 @@ describe('MemberStore', () => {
     it('load member information', async () => {
       await memberStore.fetchMember();
 
-      expect(memberStore.name).toBe('김이박최아샬');
-      expect(memberStore.amount).toBe(50_000);
+      const { member } = memberStore;
+
+      expect(member).toBeTruthy();
+    });
+  });
+
+  describe('check is logged in', () => {
+    context('when member logged in', () => {
+      it('return true', async () => {
+        await memberStore.fetchMember();
+
+        expect(memberStore.isLoggedIn()).toBeTruthy();
+      });
+    });
+
+    context('when member do not logged in', () => {
+      it('return false', async () => {
+        expect(memberStore.isLoggedIn()).toBeFalsy();
+      });
     });
   });
 });

@@ -11,7 +11,7 @@ Scenario('사용자가 로그인했을 경우', ({ I }) => {
   I.setUpUser();
   I.login('ashal1234');
 
-  I.see(/내 잔액/);
+  I.see('내 잔액:');
   I.see('로그아웃');
 });
 
@@ -20,7 +20,7 @@ Scenario('사용자가 로그아웃했을 경우', ({ I }) => {
 
   I.login('ashal1234');
 
-  I.see(/내 잔액/);
+  I.see('내 잔액:');
   I.see('로그아웃');
 
   I.click('로그아웃');

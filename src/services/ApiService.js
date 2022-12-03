@@ -54,6 +54,7 @@ export default class ApiService {
     });
 
     return {
+      memberName: data.memberName,
       name: data.name,
       amount: data.amount,
     };

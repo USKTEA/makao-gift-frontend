@@ -1,11 +1,22 @@
 import { apiService } from '../services/ApiService';
 
+import Member from '../models/Member';
+
 export default class MemberStore {
   constructor() {
-    this.name = '';
-    this.amount = 0;
+    this.member = '';
 
     this.listeners = new Set();
+  }
+
+  canAfford(cost) {
+    return this.member.canAfford({ cost });
+  }
+
+  clear() {
+    this.member = '';
+
+    this.publish();
   }
 
   async login({ memberName, password }) {
@@ -13,9 +24,7 @@ export default class MemberStore {
       const { accessToken, name, amount } = await apiService.postSession(
         { memberName, password },
       );
-
-      this.name = name;
-      this.amount = amount;
+      this.member = new Member({ memberName, name, amount });
 
       return accessToken;
     } catch (e) {
@@ -26,12 +35,27 @@ export default class MemberStore {
   }
 
   async fetchMember() {
-    const { name, amount } = await apiService.fetchMember();
+    const { memberName, name, amount } = await apiService.fetchMember();
 
-    this.name = name;
-    this.amount = amount;
+    this.member = new Member({ memberName, name, amount });
 
     this.publish();
+  }
+
+  isLoggedIn() {
+    return !!this.member;
+  }
+
+  memberName() {
+    return this.member.memberName;
+  }
+
+  name() {
+    return this.member.name;
+  }
+
+  amount() {
+    return this.member.amount;
   }
 
   subscribe(listener) {

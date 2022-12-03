@@ -61,6 +61,7 @@ const server = setupServer(
   rest.get(`${baseUrl}/members/me`, async (req, res, ctx) => res(
     ctx.json(
       {
+        memberName: 'ashal1234',
         name: '김이박최아샬',
         amount: 50_000,
       },

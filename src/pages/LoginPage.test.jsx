@@ -30,7 +30,7 @@ describe('LoginPage', () => {
       fireEvent.click(screen.getByRole('button', '로그인하기'));
 
       await waitFor(() => {
-        expect(navigate).toBeCalledWith('/');
+        expect(navigate).toBeCalledWith(-1);
       });
     });
   });

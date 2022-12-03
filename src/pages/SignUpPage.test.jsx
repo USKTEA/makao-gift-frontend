@@ -2,6 +2,14 @@ import { render, screen } from '@testing-library/react';
 
 import SignUpPage from './SignUpPage';
 
+const navigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  useNavigate() {
+    return navigate;
+  },
+}));
+
 test('SignUpPage', () => {
   render(<SignUpPage />);
 

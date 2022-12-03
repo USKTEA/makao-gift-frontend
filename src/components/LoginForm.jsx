@@ -1,14 +1,17 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import { useForm } from 'react-hook-form';
+
 import { useNavigate } from 'react-router-dom';
+
 import { useLocalStorage } from 'usehooks-ts';
+
 import useMemberStore from '../hooks/useMemberStore';
 
 export default function LoginForm() {
-  const memberStore = useMemberStore();
-
   const navigate = useNavigate();
+
+  const memberStore = useMemberStore();
 
   const [, setAccessToken] = useLocalStorage('accessToken', '');
 
@@ -22,7 +25,7 @@ export default function LoginForm() {
     if (accessToken) {
       setAccessToken(accessToken);
 
-      navigate('/');
+      navigate(-1);
     }
   };
 

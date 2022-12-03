@@ -19,6 +19,14 @@ jest.mock('react-router-dom', () => ({
   },
 }));
 
+const clear = jest.fn();
+const amount = jest.fn();
+
+jest.mock('../hooks/useMemberStore', () => () => ({
+  amount,
+  clear,
+}));
+
 const context = describe;
 
 describe('Header', () => {
