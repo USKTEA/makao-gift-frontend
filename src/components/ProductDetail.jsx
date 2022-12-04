@@ -20,6 +20,12 @@ export default function ProductDetail() {
 
   const { selected } = productStore;
 
+  useEffect(() => {
+    orderSpecificationStore.createSpecification(
+      { buyer: memberStore.memberName(), selected },
+    );
+  }, [selected]);
+
   const handleClickOrder = () => {
     if (!memberStore.isLoggedIn()) {
       navigate('/login');
@@ -35,12 +41,6 @@ export default function ProductDetail() {
 
     navigate('/order');
   };
-
-  useEffect(() => {
-    orderSpecificationStore.createSpecification(
-      { buyer: memberStore.memberName(), selected },
-    );
-  }, [selected]);
 
   return (
     <div>
@@ -71,7 +71,6 @@ export default function ProductDetail() {
                 </button>
                 <input
                   id="quantity"
-                  className="quantity"
                   name="quantity"
                   type="number"
                   value={orderSpecificationStore.quantity() || 0}

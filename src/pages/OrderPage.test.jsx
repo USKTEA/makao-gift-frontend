@@ -1,11 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import OrderPage from './OrderPage';
 
+jest.mock('react-router-dom', () => ({
+  useNavigate: jest.fn(),
+}));
+
 test('OrderPage', () => {
   render(<OrderPage />);
 
   screen.getByAltText('상품이미지');
-  screen.getByText('제조사');
   screen.getByText(/구매수량/);
   screen.getByText(/총 상품금액/);
   screen.getByLabelText('받는 분 성함');
