@@ -20,10 +20,10 @@ module.exports = () => actor({
     });
   },
   async setUpProduct({
-    id, name, price, description, manufacturer, imageUrl,
+    id, name, manufacturer, price, description, imageUrl,
   }) {
     await this.sendPostRequest('/setup-product', {
-      id, name, price, description, manufacturer, imageUrl,
+      id, name, manufacturer, price, description, imageUrl,
     });
   },
   async clearDatabase() {
@@ -48,6 +48,11 @@ module.exports = () => actor({
       `memberId=${memberId}&amount=${amount}`,
     ].join(''));
     this.amOnPage('/');
+  },
+  choose({ productName, amount }) {
+    this.click(productName);
+    this.see(amount);
+    this.click('선물하기');
   },
   // setUpAccount()
 

@@ -41,12 +41,24 @@ export default class OrderSpecificationStore {
     this.publish();
   }
 
+  name() {
+    return this.orderSpecification.productName;
+  }
+
+  manufacturer() {
+    return this.orderSpecification.manufacturer;
+  }
+
   cost() {
     return this.orderSpecification.cost;
   }
 
   quantity() {
     return this.orderSpecification.quantity;
+  }
+
+  imageUrl() {
+    return this.orderSpecification.productImageUrl;
   }
 
   subscribe(listener) {

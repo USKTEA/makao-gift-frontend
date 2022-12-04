@@ -4,7 +4,7 @@ import { orderSpecificationStore } from '../stores/OrderSpecificationStore';
 
 import useForceUpdate from './useForceUpdate';
 
-export default function useOrderStore() {
+export default function useOrderSpecificationStore() {
   const forceUpdate = useForceUpdate();
 
   useEffect(() => {
