@@ -6,14 +6,18 @@ describe('OrderSpecification', () => {
   let orderSpecification;
 
   beforeEach(() => {
+    const product = {
+      productId: 1,
+      name: '초콜릿',
+      manufacturer: 'Jocker',
+      price: 10_000,
+      description: 'yammy chocolate',
+      productImageUrl: '1',
+    };
+
     orderSpecification = new OrderSpecification({
       buyer: 'ashal1234',
-      productId: 1,
-      productName: '초콜릿',
-      productManufacturer: 'Jocker',
-      productPrice: 10_000,
-      productDescription: 'yammy chocolate',
-      productImageUrl: '1',
+      product,
     });
   });
 
@@ -75,6 +79,39 @@ describe('OrderSpecification', () => {
         const after = orderSpecification.modifyQuantity(-1);
 
         expect(after).toEqual(orderSpecification);
+      });
+    });
+  });
+
+  describe('delivery information', () => {
+    context('when add delivery information', () => {
+      it('add delivery information', () => {
+        expect(orderSpecification.deliveryInformation).toBeFalsy();
+
+        const deliveryInformation = {
+          recipient: '김아샬',
+          address: '서울시 조커동 아샬구',
+          message: '압도적감사',
+
+        };
+
+        const added = orderSpecification.addDeliveryInformation(
+          deliveryInformation,
+        );
+
+        expect(added.deliveryInformation).toEqual(deliveryInformation);
+      });
+    });
+  });
+
+  describe('fake', () => {
+    context('when fake called', () => {
+      it('create fake orderSpecification use input parameter', () => {
+        const fake = OrderSpecification.fake('초콜릿');
+
+        const { product } = fake;
+
+        expect(product.name).toBe('초콜릿');
       });
     });
   });

@@ -8,4 +8,8 @@ export default class Member {
   canAfford({ cost }) {
     return this.amount >= cost;
   }
+
+  pay({ cost }) {
+    this.amount -= cost;
+  }
 }

@@ -1,23 +1,27 @@
 import OrderSpecification from '../models/OrderSpecification';
 
-export default class OrderSpecificationStore {
-  constructor() {
-    this.orderSpecification = '';
+import Store from './Store';
 
-    this.listeners = new Set();
+export default class OrderSpecificationStore extends Store {
+  constructor() {
+    super();
+    this.orderSpecification = '';
   }
 
   createSpecification({ buyer, selected }) {
     this.orderSpecification = new OrderSpecification(
       {
         buyer,
-        productId: selected.id,
-        productName: selected.name,
-        productManufacturer: selected.manufacturer,
-        productPrice: selected.price,
-        productDescription: selected.description,
-        productImageUrl: selected.imageUrl,
+        product: { ...selected },
       },
+    );
+
+    this.publish();
+  }
+
+  addDeliveryInformation({ recipient, address, message }) {
+    this.orderSpecification = this.orderSpecification.addDeliveryInformation(
+      { recipient, address, message },
     );
 
     this.publish();
@@ -41,6 +45,10 @@ export default class OrderSpecificationStore {
     this.publish();
   }
 
+  getSpecification() {
+    return this.orderSpecification;
+  }
+
   name() {
     return this.orderSpecification.productName;
   }
@@ -61,16 +69,8 @@ export default class OrderSpecificationStore {
     return this.orderSpecification.productImageUrl;
   }
 
-  subscribe(listener) {
-    this.listeners.add(listener);
-  }
-
-  unsubscribe(listener) {
-    this.listeners.delete(listener);
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
+  deliveryInformation() {
+    return this.orderSpecification.deliveryInformation;
   }
 }
 

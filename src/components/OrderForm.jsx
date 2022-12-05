@@ -4,24 +4,34 @@ import { useForm } from 'react-hook-form';
 
 import { useNavigate } from 'react-router-dom';
 
-export default function OrderForm() {
+export default function OrderForm(
+  { addDeliveryInformation, getSpecification, requestOrder },
+) {
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = () => {
+  const onSubmit = async (data) => {
+    const { recipient, address, message } = data;
+
+    addDeliveryInformation({ recipient, address, message });
+
+    await requestOrder(
+      { specification: getSpecification() },
+    );
+
     navigate('/orders');
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label htmlFor="recipient-name">받는 분 성함</label>
+        <label htmlFor="recipient">받는 분 성함</label>
         <input
-          id="recipient-name"
+          id="recipient"
           type="text"
           maxLength="7"
-          {...register('name', {
+          {...register('recipient', {
             required: true,
             pattern: {
               value: /^[가-힣]{3,}$/g,
@@ -29,16 +39,16 @@ export default function OrderForm() {
             },
           })}
         />
-        {!errors.name && <p>3~7자까지 한글만 사용가능</p>}
-        {errors.name?.type === 'required'
+        {!errors.recipient && <p>3~7자까지 한글만 사용가능</p>}
+        {errors.recipient?.type === 'required'
           && <p>성함을 입력해주세요</p> }
-        {errors.name?.type === 'pattern'
-          && <p>{errors.name.message}</p> }
+        {errors.recipient?.type === 'pattern'
+          && <p>{errors.recipient.message}</p> }
       </div>
       <div>
-        <label htmlFor="recipient-address">받는 분 주소</label>
+        <label htmlFor="address">받는 분 주소</label>
         <input
-          id="recipient-address"
+          id="address"
           type="text"
           {...register('address', {
             required: true,
