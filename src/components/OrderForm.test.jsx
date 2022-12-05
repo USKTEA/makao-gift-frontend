@@ -1,9 +1,8 @@
 import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
+import Member from '../models/Member';
 import OrderForm from './OrderForm';
-
-const context = describe;
 
 const navigate = jest.fn();
 
@@ -13,14 +12,34 @@ jest.mock('react-router-dom', () => ({
   },
 }));
 
+const addDeliveryInformation = jest.fn();
+const getSpecification = jest.fn();
+
+jest.mock('../hooks/useOrderSpecificationStore', () => () => ({
+  addDeliveryInformation,
+  getSpecification,
+}));
+
+const requestOrder = jest.fn();
+
+jest.mock('../hooks/useOrderStore', () => () => ({
+  requestOrder,
+}));
+
+const context = describe;
+
 describe('OrderForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   context('when fill fields correctly', () => {
-    it('navigate to orders page', async () => {
-      render(<OrderForm />);
+    it('request order', async () => {
+      render(<OrderForm
+        addDeliveryInformation={addDeliveryInformation}
+        getSpecification={getSpecification}
+        requestOrder={requestOrder}
+      />);
 
       fireEvent.change(screen.getByLabelText('받는 분 성함'), {
         target: {
@@ -34,9 +53,22 @@ describe('OrderForm', () => {
         },
       });
 
+      fireEvent.change(screen.getByLabelText('받는 분께 보내는 메세지'), {
+        target: {
+          value: '압도적감사',
+        },
+      });
+
       fireEvent.click(screen.getByRole('button', '선물하기'));
 
       await waitFor(() => {
+        expect(addDeliveryInformation).toBeCalledWith({
+          recipient: '김아샬',
+          address: '서울시 조커구 아샬동',
+          message: '압도적감사',
+        });
+        expect(getSpecification).toBeCalled();
+        expect(requestOrder).toBeCalled();
         expect(navigate).toBeCalledWith('/orders');
       });
     });

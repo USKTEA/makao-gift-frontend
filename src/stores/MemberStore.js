@@ -2,21 +2,16 @@ import { apiService } from '../services/ApiService';
 
 import Member from '../models/Member';
 
-export default class MemberStore {
-  constructor() {
-    this.member = '';
+import Store from './Store';
 
-    this.listeners = new Set();
+export default class MemberStore extends Store {
+  constructor() {
+    super();
+    this.member = '';
   }
 
   canAfford(cost) {
     return this.member.canAfford({ cost });
-  }
-
-  clear() {
-    this.member = '';
-
-    this.publish();
   }
 
   async login({ memberName, password }) {
@@ -42,6 +37,12 @@ export default class MemberStore {
     this.publish();
   }
 
+  clear() {
+    this.member = '';
+
+    this.publish();
+  }
+
   isLoggedIn() {
     return !!this.member;
   }
@@ -56,18 +57,6 @@ export default class MemberStore {
 
   amount() {
     return this.member.amount;
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-  }
-
-  unsubscribe(listener) {
-    this.listeners.delete(listener);
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

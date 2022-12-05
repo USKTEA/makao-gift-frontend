@@ -40,6 +40,24 @@ const server = setupServer(
     imageUrl: 2,
   }))),
 
+  rest.post(`${baseUrl}/orders`, async (req, res, ctx) => {
+    const { specification } = await req.json();
+    const { product, deliveryInformation } = specification;
+    const { recipient, address } = deliveryInformation;
+
+    if (!product.id || !recipient || !address) {
+      return res(
+        ctx.status(400),
+      );
+    }
+
+    return res(
+      ctx.json({
+        id: 1,
+      }),
+    );
+  }),
+
   rest.post(`${baseUrl}/session`, async (req, res, ctx) => {
     const { memberName, password } = await req.json();
 

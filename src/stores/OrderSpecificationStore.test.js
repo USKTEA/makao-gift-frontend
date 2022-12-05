@@ -110,5 +110,31 @@ describe('OrderSpecification', () => {
         expect(orderSpecificationStore.quantity()).toBe(1);
       });
     });
+
+    context('when add delivery information', () => {
+      it('get specification with delivery information', () => {
+        orderSpecificationStore.createSpecification({
+          buyer,
+          selected,
+        });
+
+        expect(orderSpecificationStore.deliveryInformation()).toBeFalsy();
+
+        orderSpecificationStore.addDeliveryInformation(
+          {
+            recipient: '김아샬',
+            address: '서울시 조커구 아샬동',
+            message: '압도적감사',
+          },
+        );
+
+        expect(orderSpecificationStore.deliveryInformation())
+          .toEqual({
+            recipient: '김아샬',
+            address: '서울시 조커구 아샬동',
+            message: '압도적감사',
+          });
+      });
+    });
   });
 });

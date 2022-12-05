@@ -1,11 +1,13 @@
 import { apiService } from '../services/ApiService';
 
-export default class ProductStore {
+import Store from './Store';
+
+export default class ProductStore extends Store {
   constructor() {
+    super();
     this.products = [];
     this.selected = '';
     this.page = '';
-    this.listeners = new Set();
   }
 
   async fetchProducts(pageNumber = '') {
@@ -21,18 +23,6 @@ export default class ProductStore {
     this.selected = await apiService.fetchProduct(id);
 
     this.publish();
-  }
-
-  subscribe(listener) {
-    this.listeners.add(listener);
-  }
-
-  unsubscribe(listener) {
-    this.listeners.delete(listener);
-  }
-
-  publish() {
-    this.listeners.forEach((listener) => listener());
   }
 }
 

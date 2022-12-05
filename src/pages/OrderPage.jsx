@@ -1,11 +1,34 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
+import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
+
 import OrderForm from '../components/OrderForm';
 import ProductArea from '../components/ProductArea';
-import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
+import useOrderStore from '../hooks/useOrderStore';
 
 export default function OrderPage() {
   const orderSpecificationStore = useOrderSpecificationStore();
+
+  const orderStore = useOrderStore();
+
+  const { addDeliveryInformation, getSpecification } = orderSpecificationStore;
+  const { requestOrder } = orderStore;
+
+  const handleAddDeliveryInformation = ({ recipient, address, message }) => {
+    const boundAddDeliveryInformation = addDeliveryInformation.bind(
+      orderSpecificationStore,
+    );
+
+    boundAddDeliveryInformation({ recipient, address, message });
+  };
+
+  const handleGetSpecification = () => {
+    const boundGetSpecification = getSpecification.bind(
+      orderSpecificationStore,
+    );
+
+    return boundGetSpecification();
+  };
 
   return (
     <>
@@ -16,7 +39,11 @@ export default function OrderPage() {
         quantity={orderSpecificationStore.quantity()}
         cost={orderSpecificationStore.cost()}
       />
-      <OrderForm />
+      <OrderForm
+        addDeliveryInformation={handleAddDeliveryInformation}
+        getSpecification={handleGetSpecification}
+        requestOrder={requestOrder}
+      />
     </>
   );
 }

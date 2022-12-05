@@ -14,6 +14,15 @@ export default class ApiService {
     this.accessToken = accessToken;
   }
 
+  async postOrder(order) {
+    const url = `${baseUrl}/orders`;
+
+    console.log(order);
+    const { data } = await axios.post(url, order);
+
+    return data;
+  }
+
   async fetchProducts(number) {
     const url = `${baseUrl}/products?page=${number}`;
 
