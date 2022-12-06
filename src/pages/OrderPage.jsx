@@ -5,29 +5,30 @@ import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
 import OrderForm from '../components/OrderForm';
 import ProductArea from '../components/ProductArea';
 import useOrderStore from '../hooks/useOrderStore';
+import useMemberStore from '../hooks/useMemberStore';
 
 export default function OrderPage() {
   const orderSpecificationStore = useOrderSpecificationStore();
-
+  const memberStore = useMemberStore();
   const orderStore = useOrderStore();
 
   const { addDeliveryInformation, getSpecification } = orderSpecificationStore;
   const { requestOrder } = orderStore;
+  const { payFor } = memberStore;
 
   const handleAddDeliveryInformation = ({ recipient, address, message }) => {
-    const boundAddDeliveryInformation = addDeliveryInformation.bind(
+    addDeliveryInformation.call(
       orderSpecificationStore,
+      { recipient, address, message },
     );
-
-    boundAddDeliveryInformation({ recipient, address, message });
   };
 
-  const handleGetSpecification = () => {
-    const boundGetSpecification = getSpecification.bind(
-      orderSpecificationStore,
-    );
+  const handleGetSpecification = (() => getSpecification.call(
+    orderSpecificationStore,
+  ));
 
-    return boundGetSpecification();
+  const handlePayment = () => {
+    payFor.call(memberStore, { cost: orderSpecificationStore.cost() });
   };
 
   return (
@@ -43,6 +44,7 @@ export default function OrderPage() {
         addDeliveryInformation={handleAddDeliveryInformation}
         getSpecification={handleGetSpecification}
         requestOrder={requestOrder}
+        handlePayment={handlePayment}
       />
     </>
   );

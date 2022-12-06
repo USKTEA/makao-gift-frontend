@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import useMemberStore from '../hooks/useMemberStore';
 
 export default function SignUpPage() {

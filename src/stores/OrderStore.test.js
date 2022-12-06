@@ -22,4 +22,16 @@ describe('OrderStore', () => {
       });
     });
   });
+
+  describe('fetch orders', () => {
+    context('when member has order history', () => {
+      it('get orders', async () => {
+        await orderStore.fetchOrders();
+
+        const orders = orderStore.getOrders();
+
+        expect(orders.length).not.toBe(0);
+      });
+    });
+  });
 });

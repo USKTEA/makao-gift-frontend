@@ -1,8 +1,20 @@
-import { v4 as uuidv4 } from 'uuid';
-
+/* eslint-disable class-methods-use-this */
 export default class Order {
   constructor({ specification }) {
-    this.orderNumber = uuidv4();
+    this.orderNumber = this.orderNumber();
     this.specification = { ...specification };
+  }
+
+  orderNumber() {
+    const number = String(new Date().getTime())
+      .split('')
+      .slice(0, 9)
+      .join('');
+
+    return number;
+  }
+
+  getOrderNumber() {
+    return this.orderNumber;
   }
 }

@@ -14,6 +14,12 @@ export default class MemberStore extends Store {
     return this.member.canAfford({ cost });
   }
 
+  payFor({ cost }) {
+    this.member.pay({ cost });
+
+    this.publish();
+  }
+
   async login({ memberName, password }) {
     try {
       const { accessToken, name, amount } = await apiService.postSession(

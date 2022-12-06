@@ -27,7 +27,7 @@ module.exports = () => actor({
     });
   },
   async clearDatabase() {
-    await this.sendDeleteRequest('/setup-products');
+    await this.sendDeleteRequest('/clear-database');
   },
   async setUpUser() {
     await this.sendPostRequest('/setup-user');
@@ -54,15 +54,15 @@ module.exports = () => actor({
     this.see(amount);
     this.click('선물하기');
   },
-  // setUpAccount()
-
-  // setUpProducts(int)
-  // setUpProduct(..상품 정보)
-
-  // login(id)
-  // changeAmount(int)
-
-  // setUpOrder('productName:''')
-  // setUpOrders(int)
-
+  async sendGiftTo({ recipient }) {
+    this.click('스토어');
+    this.click('초콜릿');
+    this.click('선물하기');
+    this.fillField('받는 분 성함', recipient);
+    this.fillField('받는 분 주소', '서울시 성동수 상원동');
+    this.click('선물하기');
+  },
+  logout() {
+    this.click('로그아웃');
+  },
 });

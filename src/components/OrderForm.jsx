@@ -5,20 +5,20 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 export default function OrderForm(
-  { addDeliveryInformation, getSpecification, requestOrder },
+  {
+    addDeliveryInformation, getSpecification, requestOrder, handlePayment,
+  },
 ) {
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = async (data) => {
-    const { recipient, address, message } = data;
-
+  const onSubmit = async ({ recipient, address, message }) => {
     addDeliveryInformation({ recipient, address, message });
 
-    await requestOrder(
-      { specification: getSpecification() },
-    );
+    handlePayment();
+
+    await requestOrder({ specification: getSpecification() });
 
     navigate('/orders');
   };
