@@ -1,8 +1,8 @@
 Feature('주문한 내역 보기');
 
 Scenario('사용자가 주문 목록에서 주문을 클릭했을 경우', ({ I }) => {
+  I.setUpUser();
   I.login('ahsal1234');
-  I.setUpAccount();
   I.setUpOrder({
     id: 1,
     manufacturer: 'Jocker',

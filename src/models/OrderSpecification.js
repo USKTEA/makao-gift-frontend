@@ -45,6 +45,10 @@ export default class OrderSpecification {
     });
   }
 
+  cost() {
+    return this.cost;
+  }
+
   static fake(productName) {
     const buyer = 'faker1234';
     const product = {

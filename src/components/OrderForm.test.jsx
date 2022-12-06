@@ -1,7 +1,6 @@
 import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
-import Member from '../models/Member';
 import OrderForm from './OrderForm';
 
 const navigate = jest.fn();
@@ -10,6 +9,12 @@ jest.mock('react-router-dom', () => ({
   useNavigate() {
     return navigate;
   },
+}));
+
+const payFor = jest.fn();
+
+jest.mock('../hooks/useMemberStore', () => () => ({
+  payFor,
 }));
 
 const addDeliveryInformation = jest.fn();
@@ -39,6 +44,7 @@ describe('OrderForm', () => {
         addDeliveryInformation={addDeliveryInformation}
         getSpecification={getSpecification}
         requestOrder={requestOrder}
+        handlePayment={payFor}
       />);
 
       fireEvent.change(screen.getByLabelText('받는 분 성함'), {
@@ -69,6 +75,7 @@ describe('OrderForm', () => {
         });
         expect(getSpecification).toBeCalled();
         expect(requestOrder).toBeCalled();
+        expect(payFor).toBeCalled();
         expect(navigate).toBeCalledWith('/orders');
       });
     });

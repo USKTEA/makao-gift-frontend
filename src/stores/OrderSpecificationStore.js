@@ -57,12 +57,12 @@ export default class OrderSpecificationStore extends Store {
     return this.orderSpecification.manufacturer;
   }
 
-  cost() {
-    return this.orderSpecification.cost;
-  }
-
   quantity() {
     return this.orderSpecification.quantity;
+  }
+
+  cost() {
+    return this.orderSpecification.cost;
   }
 
   imageUrl() {

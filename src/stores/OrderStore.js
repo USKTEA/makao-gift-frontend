@@ -9,7 +9,8 @@ export default class OrderStore extends Store {
   constructor() {
     super();
 
-    this.orders = new Set();
+    this.orders = [];
+    this.page = '';
   }
 
   async requestOrder({ specification }) {
@@ -20,8 +21,21 @@ export default class OrderStore extends Store {
     return id;
   }
 
-  orders() {
+  async fetchOrders(pageNumber = '') {
+    const { orders, page } = await apiService.fetchOrders(pageNumber);
+
+    this.orders = orders;
+    this.page = page;
+
+    this.publish();
+  }
+
+  getOrders() {
     return this.orders;
+  }
+
+  getPage() {
+    return this.page;
   }
 }
 

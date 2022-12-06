@@ -100,7 +100,7 @@ export default function ProductDetail() {
           총 상품금액:
           {' '}
           <strong>
-            {`${numberFormat(orderSpecificationStore.cost())}원`}
+            {`${numberFormat(orderSpecificationStore.cost)}원`}
           </strong>
         </span>
       </div>

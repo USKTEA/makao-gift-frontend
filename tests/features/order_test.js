@@ -35,7 +35,6 @@ Scenario(
 
     I.click('선물하기');
 
-    I.wait(100);
     I.see('내가 주문한 내역입니다');
     I.see('To. 김이박최아샬');
     I.see(`내 잔액: ${numberFormat(amount - price)}원`);
