@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+
 import ProductsPage from './ProductsPage';
 
 jest.mock('../hooks/useProductStore', () => () => ({

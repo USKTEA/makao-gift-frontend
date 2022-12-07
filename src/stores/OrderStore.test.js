@@ -23,14 +23,25 @@ describe('OrderStore', () => {
     });
   });
 
-  describe('fetch orders', () => {
+  describe('fetch order', () => {
+    beforeEach(async () => {
+      await orderStore.fetchOrders();
+      await orderStore.fetchOrder(1);
+    });
+
     context('when member has order history', () => {
       it('get orders', async () => {
-        await orderStore.fetchOrders();
-
         const orders = orderStore.getOrders();
 
         expect(orders.length).not.toBe(0);
+      });
+    });
+
+    context('when fetch one specific order', () => {
+      it('get a order', async () => {
+        const selected = orderStore.getSelected();
+
+        expect(selected).toBeTruthy();
       });
     });
   });

@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
 import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
+import useOrderStore from '../hooks/useOrderStore';
+import useMemberStore from '../hooks/useMemberStore';
 
 import OrderForm from '../components/OrderForm';
 import ProductArea from '../components/ProductArea';
-import useOrderStore from '../hooks/useOrderStore';
-import useMemberStore from '../hooks/useMemberStore';
 
 export default function OrderPage() {
   const orderSpecificationStore = useOrderSpecificationStore();

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import ProductArea from './ProductArea';
 
 test('ProductArea', () => {
