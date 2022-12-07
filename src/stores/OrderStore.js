@@ -10,6 +10,7 @@ export default class OrderStore extends Store {
     super();
 
     this.orders = [];
+    this.selected = '';
     this.page = '';
   }
 
@@ -30,8 +31,18 @@ export default class OrderStore extends Store {
     this.publish();
   }
 
+  async fetchOrder(id) {
+    this.selected = await apiService.fetchOrder(id);
+
+    this.publish();
+  }
+
   getOrders() {
     return this.orders;
+  }
+
+  getSelected() {
+    return this.selected;
   }
 
   getPage() {

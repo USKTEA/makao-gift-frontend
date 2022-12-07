@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import useProductStore from '../hooks/useProductStore';
 
 import Banner from '../components/Banner';
-
 import Products from '../components/Products';
 
 export default function ProductsPage() {

@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-
 import axios from 'axios';
 import config from '../config';
 
@@ -24,6 +23,18 @@ export default class ApiService {
 
   async fetchOrders(number) {
     const url = `${baseUrl}/orders?page=${number}`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+
+    return data;
+  }
+
+  async fetchOrder(id) {
+    const url = `${baseUrl}/orders/${id}`;
 
     const { data } = await axios.get(url, {
       headers: {
