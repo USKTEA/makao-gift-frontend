@@ -1,11 +1,12 @@
 Feature('상품 주문하기');
 
-const amount = 20000;
+const amount = 50000;
 const price = 10000;
 
 const numberFormat = (number) => Intl.NumberFormat().format(number);
 
 Before(({ I }) => {
+  I.clearDatabase();
   I.setUpUser();
   I.changeAmount({ memberId: 1, amount });
   I.setUpProduct(

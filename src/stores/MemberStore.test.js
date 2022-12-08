@@ -22,6 +22,38 @@ describe('MemberStore', () => {
       });
     });
 
+    describe('logout', () => {
+      context('when logout', () => {
+        it('clear member information', async () => {
+          await memberStore.login(
+            { memberName: 'ashal1234', password: 'Password1234!' },
+          );
+
+          expect(memberStore.member).toBeTruthy();
+
+          memberStore.clear();
+
+          expect(memberStore.member).toBeFalsy();
+        });
+      });
+    });
+
+    describe('check is logged in', () => {
+      context('when member logged in', () => {
+        it('return true', async () => {
+          await memberStore.fetchMember();
+
+          expect(memberStore.isLoggedIn()).toBeTruthy();
+        });
+      });
+
+      context('when member do not logged in', () => {
+        it('return false', async () => {
+          expect(memberStore.isLoggedIn()).toBeFalsy();
+        });
+      });
+    });
+
     context('with incorrect memberName', () => {
       it('does not load member information', async () => {
         await memberStore.login(
@@ -47,22 +79,6 @@ describe('MemberStore', () => {
     });
   });
 
-  describe('logout', () => {
-    context('when logout', () => {
-      it('clear member information', async () => {
-        await memberStore.login(
-          { memberName: 'ashal1234', password: 'Password1234!' },
-        );
-
-        expect(memberStore.member).toBeTruthy();
-
-        memberStore.clear();
-
-        expect(memberStore.member).toBeFalsy();
-      });
-    });
-  });
-
   describe('fetchMember', () => {
     it('load member information', async () => {
       await memberStore.fetchMember();
@@ -73,19 +89,15 @@ describe('MemberStore', () => {
     });
   });
 
-  describe('check is logged in', () => {
-    context('when member logged in', () => {
-      it('return true', async () => {
-        await memberStore.fetchMember();
-
-        expect(memberStore.isLoggedIn()).toBeTruthy();
+  describe('registerMember', () => {
+    it('register member', async () => {
+      const id = await memberStore.signUp({
+        name: '김아샬',
+        memberName: 'ashal1234',
+        password: 'Password1234!',
       });
-    });
 
-    context('when member do not logged in', () => {
-      it('return false', async () => {
-        expect(memberStore.isLoggedIn()).toBeFalsy();
-      });
+      expect(id).toBeTruthy();
     });
   });
 });

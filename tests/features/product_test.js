@@ -1,6 +1,7 @@
 Feature('상품 상세 확인');
 
 Before(({ I }) => {
+  I.clearDatabase();
   I.setUpProduct(
     {
       id: 1,
@@ -30,7 +31,8 @@ Scenario('사용자가 로그인을 했고 잔액이 총 상품금액보다 클 
   I.changeAmount({ memberId: 1, amount: 50000 });
   I.login('ashal1234');
 
-  I.amOnPage('/products/1');
+  I.click('스토어');
+  I.click('초콜릿');
 
   I.see('초콜릿');
   I.see('yammy chocolate');
@@ -93,6 +95,8 @@ Scenario('사용자가 로그인을 했고 잔액이 총 상품금액보다 작�
 });
 
 Scenario('사용자가 구매수량을 올릴 경우', ({ I }) => {
+  I.login('ashal1234');
+
   I.amOnPage('/products/1');
 
   I.see('초콜릿');

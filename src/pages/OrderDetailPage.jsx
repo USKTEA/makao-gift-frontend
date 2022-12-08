@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useLocalStorage } from 'usehooks-ts';
 
 import useMemberStore from '../hooks/useMemberStore';
 import useOrderStore from '../hooks/useOrderStore';
@@ -8,7 +7,6 @@ import useOrderStore from '../hooks/useOrderStore';
 import OrderDetail from '../components/OrderDetail';
 
 export default function OrderDetailPage() {
-  const [accessToken] = useLocalStorage('accessToken', '');
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -16,7 +14,7 @@ export default function OrderDetailPage() {
   const memberStore = useMemberStore();
 
   useEffect(() => {
-    if (!memberStore.isLoggedIn() && !accessToken) {
+    if (!memberStore.isLoggedIn()) {
       navigate('/login');
 
       return;

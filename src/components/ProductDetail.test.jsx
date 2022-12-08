@@ -39,6 +39,7 @@ jest.mock('../hooks/useOrderSpecificationStore', () => () => ({
   increaseQuantity,
   decreaseQuantity,
   modifyQuantity,
+  getSpecification: jest.fn(),
   cost: jest.fn(),
   quantity: jest.fn(),
 }));

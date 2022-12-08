@@ -19,6 +19,23 @@ export default class OrderSpecificationStore extends Store {
     this.publish();
   }
 
+  loadSpecification(specification) {
+    const {
+      buyer, product, quantity, cost,
+    } = specification;
+
+    this.orderSpecification = new OrderSpecification(
+      {
+        buyer,
+        product,
+        quantity,
+        cost,
+      },
+    );
+
+    this.publish();
+  }
+
   addDeliveryInformation({ recipient, address, message }) {
     this.orderSpecification = this.orderSpecification.addDeliveryInformation(
       { recipient, address, message },

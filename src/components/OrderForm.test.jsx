@@ -25,10 +25,10 @@ jest.mock('../hooks/useOrderSpecificationStore', () => () => ({
   getSpecification,
 }));
 
-const requestOrder = jest.fn();
+const createOrder = jest.fn();
 
 jest.mock('../hooks/useOrderStore', () => () => ({
-  requestOrder,
+  createOrder,
 }));
 
 const context = describe;
@@ -43,7 +43,7 @@ describe('OrderForm', () => {
       render(<OrderForm
         addDeliveryInformation={addDeliveryInformation}
         getSpecification={getSpecification}
-        requestOrder={requestOrder}
+        createOrder={createOrder}
         handlePayment={payFor}
       />);
 
@@ -74,7 +74,7 @@ describe('OrderForm', () => {
           message: '압도적감사',
         });
         expect(getSpecification).toBeCalled();
-        expect(requestOrder).toBeCalled();
+        expect(createOrder).toBeCalled();
         expect(payFor).toBeCalled();
         expect(navigate).toBeCalledWith('/orders');
       });

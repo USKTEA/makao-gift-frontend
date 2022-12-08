@@ -7,64 +7,55 @@ const baseUrl = config.apiBaseUrl;
 export default class ApiService {
   constructor() {
     this.accessToken = '';
+
+    this.instance = axios.create({
+      baseURL: baseUrl,
+    });
   }
 
   setAccessToken(accessToken) {
     this.accessToken = accessToken;
+
+    if (accessToken) {
+      this.instance = axios.create({
+        baseURL: baseUrl,
+        headers: { Authorization: `Bearer ${this.accessToken}` },
+      });
+    }
   }
 
-  async postOrder(order) {
-    const url = `${baseUrl}/orders`;
-
-    const { data } = await axios.post(url, order);
+  async createOrder(order) {
+    const { data } = await this.instance.post('/orders', order);
 
     return data;
   }
 
   async fetchOrders(number) {
-    const url = `${baseUrl}/orders?page=${number}`;
-
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
+    const { data } = await this.instance.get(`/orders?page=${number}`);
 
     return data;
   }
 
   async fetchOrder(id) {
-    const url = `${baseUrl}/orders/${id}`;
-
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
+    const { data } = await this.instance.get(`/orders/${id}`);
 
     return data;
   }
 
   async fetchProducts(number) {
-    const url = `${baseUrl}/products?page=${number}`;
-
-    const { data } = await axios.get(url);
+    const { data } = await this.instance.get(`/products?page=${number}`);
 
     return data;
   }
 
   async fetchProduct(id) {
-    const url = `${baseUrl}/products/${id}`;
-
-    const { data } = await axios.get(url);
+    const { data } = await this.instance.get(`/products/${id}`);
 
     return data;
   }
 
   async postSession({ memberName, password }) {
-    const url = `${baseUrl}/session`;
-
-    const { data } = await axios.post(url, {
+    const { data } = await this.instance.post('/session', {
       memberName, password,
     });
 
@@ -76,19 +67,27 @@ export default class ApiService {
   }
 
   async fetchMember() {
-    const url = `${baseUrl}/members/me`;
-
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    });
+    const { data } = await this.instance.get('/members/me');
 
     return {
       memberName: data.memberName,
       name: data.name,
       amount: data.amount,
     };
+  }
+
+  async createMember({ name, memberName, password }) {
+    const { data } = await this.instance.post('/members', {
+      name, memberName, password,
+    });
+
+    return data;
+  }
+
+  async countMember(memberName) {
+    const { data } = await this.instance.get(`/members?countOnly=true&memberName=${memberName}`);
+
+    return data;
   }
 }
 

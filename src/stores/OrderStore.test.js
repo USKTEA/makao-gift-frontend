@@ -16,7 +16,9 @@ describe('OrderStore', () => {
       it('create order with specification and send request', async () => {
         const orderSpecification = OrderSpecification.fake('초콜릿');
 
-        const orderId = await orderStore.requestOrder({ specification: orderSpecification });
+        const orderId = await orderStore.createOrder(
+          { specification: orderSpecification },
+        );
 
         expect(orderId).toBeTruthy();
       });

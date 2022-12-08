@@ -35,5 +35,3 @@ describe('LoginPage', () => {
     });
   });
 });
-
-// todo 예외처리
