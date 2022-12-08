@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useLocalStorage } from 'usehooks-ts';
+import { useEffect } from 'react';
 import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
 import useOrderStore from '../hooks/useOrderStore';
 import useMemberStore from '../hooks/useMemberStore';
@@ -12,8 +14,16 @@ export default function OrderPage() {
   const orderStore = useOrderStore();
 
   const { addDeliveryInformation, getSpecification } = orderSpecificationStore;
-  const { requestOrder } = orderStore;
+  const { createOrder } = orderStore;
   const { payFor } = memberStore;
+
+  const [specification] = useLocalStorage('specification', '');
+
+  useEffect(() => {
+    if (specification) {
+      orderSpecificationStore.loadSpecification(specification);
+    }
+  }, [specification]);
 
   const handleAddDeliveryInformation = ({ recipient, address, message }) => {
     addDeliveryInformation.call(
@@ -42,7 +52,7 @@ export default function OrderPage() {
       <OrderForm
         addDeliveryInformation={handleAddDeliveryInformation}
         getSpecification={handleGetSpecification}
-        requestOrder={requestOrder}
+        createOrder={createOrder}
         handlePayment={handlePayment}
       />
     </>

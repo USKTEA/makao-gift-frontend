@@ -2,12 +2,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'usehooks-ts';
 
 export default function OrderForm(
   {
-    addDeliveryInformation, getSpecification, requestOrder, handlePayment,
+    addDeliveryInformation, getSpecification, createOrder, handlePayment,
   },
 ) {
+  const [, setSpecification] = useLocalStorage('specification', '');
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -17,8 +19,9 @@ export default function OrderForm(
 
     handlePayment();
 
-    await requestOrder({ specification: getSpecification() });
+    await createOrder({ specification: getSpecification() });
 
+    setSpecification('');
     navigate('/orders');
   };
 

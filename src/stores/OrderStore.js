@@ -14,10 +14,10 @@ export default class OrderStore extends Store {
     this.page = '';
   }
 
-  async requestOrder({ specification }) {
+  async createOrder({ specification }) {
     const order = new Order({ specification });
 
-    const { id } = await apiService.postOrder({ ...order });
+    const { id } = await apiService.createOrder({ ...order });
 
     return id;
   }

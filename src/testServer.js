@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -7,7 +6,6 @@ import config from './config';
 
 const baseUrl = config.apiBaseUrl;
 
-// TODO 이미지 소스 추가하고 저장해야해 메타데이터만 저장하고 불러오자
 const server = setupServer(
   rest.get(`${baseUrl}/products`, async (req, res, ctx) => res(ctx.json({
     products: [
@@ -123,8 +121,11 @@ const server = setupServer(
       );
     }
 
-    return rest(
+    return res(
       ctx.status(400),
+      ctx.json({
+        message: '아이디 혹은 비밀번호가 맞지 않습니다',
+      }),
     );
   }),
 
@@ -137,6 +138,37 @@ const server = setupServer(
       },
     ),
   )),
+
+  rest.post(`${baseUrl}/members`, async (req, res, ctx) => {
+    const { name, memberName, password } = await req.json();
+
+    if (!name || !memberName || !password) {
+      return rest(
+        ctx.status(400),
+      );
+    }
+
+    return res(
+      ctx.json({
+        id: 1,
+      }),
+    );
+  }),
+
+  rest.get(`${baseUrl}/members`, async (req, res, ctx) => {
+    const countOnly = req.url.searchParams.get('countOnly');
+    const memberName = req.url.searchParams.get('memberName');
+
+    if (countOnly && memberName === 'inUse') {
+      return res(ctx.json({
+        count: 1,
+      }));
+    }
+
+    return res(ctx.json({
+      count: 0,
+    }));
+  }),
 );
 
 export default server;

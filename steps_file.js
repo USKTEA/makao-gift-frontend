@@ -34,7 +34,7 @@ module.exports = () => actor({
   },
   login(userName) {
     this.amOnPage('/');
-    this.amOnPage('/login');
+    this.click('로그인');
 
     this.fillField('아이디', userName);
     this.fillField('비밀번호', 'Password1234!');

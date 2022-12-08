@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+
 import { apiService } from '../services/ApiService';
 
 import Member from '../models/Member';
@@ -8,6 +10,7 @@ export default class MemberStore extends Store {
   constructor() {
     super();
     this.member = '';
+    this.error = '';
   }
 
   canAfford(cost) {
@@ -25,14 +28,25 @@ export default class MemberStore extends Store {
       const { accessToken, name, amount } = await apiService.postSession(
         { memberName, password },
       );
+
       this.member = new Member({ memberName, name, amount });
 
       return accessToken;
-    } catch (e) {
-      return ''; // 예외처리 필요
+    } catch (error) {
+      this.error = '아이디 혹은 비밀번호가 맞지 않습니다';
+
+      return '';
     } finally {
       this.publish();
     }
+  }
+
+  async signUp({ name, memberName, password }) {
+    const { id } = await apiService.createMember(
+      { name, memberName, password },
+    );
+
+    return id;
   }
 
   async fetchMember() {
@@ -63,6 +77,10 @@ export default class MemberStore extends Store {
 
   amount() {
     return this.member.amount;
+  }
+
+  getError() {
+    return this.error;
   }
 }
 

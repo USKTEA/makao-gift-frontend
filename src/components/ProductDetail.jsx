@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useState, useEffect } from 'react';
 
+import { useLocalStorage } from 'usehooks-ts';
 import useProductStore from '../hooks/useProductStore';
 import useMemberStore from '../hooks/useMemberStore';
 import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
@@ -10,6 +11,7 @@ import useOrderSpecificationStore from '../hooks/useOrderSpecificationStore';
 import numberFormat from '../utils/numberFormat';
 
 export default function ProductDetail() {
+  const [, setSpecification] = useLocalStorage('specification', '');
   const [clicked, setClicked] = useState(false);
 
   const navigate = useNavigate();
@@ -38,6 +40,8 @@ export default function ProductDetail() {
 
       return;
     }
+
+    setSpecification(orderSpecificationStore.getSpecification());
 
     navigate('/order');
   };
@@ -100,7 +104,7 @@ export default function ProductDetail() {
           총 상품금액:
           {' '}
           <strong>
-            {`${numberFormat(orderSpecificationStore.cost)}원`}
+            {`${numberFormat(orderSpecificationStore.cost())}원`}
           </strong>
         </span>
       </div>

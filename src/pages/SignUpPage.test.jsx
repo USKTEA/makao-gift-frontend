@@ -10,12 +10,34 @@ jest.mock('react-router-dom', () => ({
   },
 }));
 
-test('SignUpPage', () => {
-  render(<SignUpPage />);
+const isLoggedIn = jest.fn();
 
-  screen.getByLabelText('이름:');
-  screen.getByLabelText('아이디:');
-  screen.getByLabelText('비밀번호:');
-  screen.getByLabelText('비밀번호 확인:');
-  screen.getByRole('button', { name: '회원가입' });
+jest.mock('../hooks/useMemberStore', () => () => ({
+  isLoggedIn,
+}));
+
+const context = describe;
+
+describe('SignUpPage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  context('when member logged in', () => {
+    it('navigate to homepage', () => {
+      isLoggedIn.mockReturnValue(true);
+
+      render(<SignUpPage />);
+
+      expect(navigate).toBeCalledWith('/');
+    });
+
+    context('when did not log in', () => {
+      isLoggedIn.mockReturnValue(false);
+
+      render(<SignUpPage />);
+
+      screen.getByText('SIGN UP');
+    });
+  });
 });
