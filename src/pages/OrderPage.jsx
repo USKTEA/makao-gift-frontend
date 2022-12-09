@@ -62,6 +62,10 @@ export default function OrderPage() {
     payFor.call(memberStore, { cost: orderSpecificationStore.cost() });
   };
 
+  if (!product) {
+    return (<p>now loading...</p>);
+  }
+
   return (
     <Container>
       <Wrapper>

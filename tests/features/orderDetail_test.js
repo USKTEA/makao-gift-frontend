@@ -16,7 +16,6 @@ Before(({ I }) => {
 Scenario('사용자가 주문 목록에서 주문을 클릭했을 경우', ({ I }) => {
   I.login('ashal1234');
   I.sendGiftTo({ recipient: '김이박최아샬' });
-  I.see('내가 주문한 내역입니다');
   I.click('To. 김이박최아샬');
   I.see('김이박최아샬');
 });
