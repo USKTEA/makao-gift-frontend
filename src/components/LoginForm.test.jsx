@@ -2,13 +2,23 @@ import {
   screen, render, fireEvent, waitFor, cleanup,
 } from '@testing-library/react';
 
+import { ThemeProvider } from 'styled-components';
+
 import LoginForm from './LoginForm';
+import defaultTheme from '../styles/defaultTheme';
 
 const navigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   useNavigate() {
     return navigate;
+  },
+  Link({ children, to }) {
+    return (
+      <a href={to}>
+        {children}
+      </a>
+    );
   },
 }));
 
@@ -21,7 +31,11 @@ describe('LoginForm', () => {
 
   context('when login success', () => {
     it('navigate to previous page', async () => {
-      render(<LoginForm />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <LoginForm />
+        </ThemeProvider>,
+      );
 
       screen.getByRole('heading', { name: 'USER LOGIN' });
 
@@ -43,7 +57,11 @@ describe('LoginForm', () => {
 
   context('when id field is blank', () => {
     it('show error message', async () => {
-      render(<LoginForm />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <LoginForm />
+        </ThemeProvider>,
+      );
 
       screen.getByRole('heading', { name: 'USER LOGIN' });
 
@@ -65,7 +83,11 @@ describe('LoginForm', () => {
 
   context('when password field is blank', () => {
     it('show error message', async () => {
-      render(<LoginForm />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <LoginForm />
+        </ThemeProvider>,
+      );
 
       screen.getByRole('heading', { name: 'USER LOGIN' });
 
@@ -87,7 +109,11 @@ describe('LoginForm', () => {
 
   context('when cant find member by memberName', () => {
     it('show error message', async () => {
-      render(<LoginForm />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <LoginForm />
+        </ThemeProvider>,
+      );
 
       screen.getByRole('heading', { name: 'USER LOGIN' });
 
@@ -110,7 +136,11 @@ describe('LoginForm', () => {
 
   context('when password is incorrect', () => {
     it('show error message', async () => {
-      render(<LoginForm />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <LoginForm />
+        </ThemeProvider>,
+      );
 
       screen.getByRole('heading', { name: 'USER LOGIN' });
 

@@ -1,18 +1,46 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
+import { MemoryRouter } from 'react-router';
+
 import OrderPage from './OrderPage';
 
-jest.mock('react-router-dom', () => ({
-  useNavigate: jest.fn(),
+import defaultTheme from '../styles/defaultTheme';
+
+jest.mock('../hooks/useOrderSpecificationStore', () => () => ({
+  orderSpecification: {
+    buyer: 'buyer',
+    product: {
+      id: 1,
+      name: '초콜릿',
+      manufacturer: 'Jocker',
+      price: 10000,
+      description: 'yammy chocolate',
+      imageUrl: 1,
+    },
+    quantity: 1,
+    cost: 10000,
+    deliveryInformation: undefined,
+  },
+  imageUrl: jest.fn(),
+  manufacturer: jest.fn(),
+  name: jest.fn(),
+  quantity: jest.fn(),
+  cost: jest.fn(),
 }));
 
-test('OrderPage', () => {
-  render(<OrderPage />);
+test('OrderPage', async () => {
+  render(
+    <ThemeProvider theme={defaultTheme}>
+      <MemoryRouter>
+        <OrderPage />
+      </MemoryRouter>
+    </ThemeProvider>,
+  );
 
-  screen.getByAltText('상품이미지');
-  screen.getByText(/구매수량/);
-  screen.getByText(/총 상품금액/);
-  screen.getByLabelText('받는 분 성함');
-  screen.getByLabelText('받는 분 주소');
-  screen.getByLabelText('받는 분께 보내는 메세지');
-  screen.getByRole('button', '선물하기');
+  await waitFor(() => {
+    screen.getByLabelText('받는 분 성함');
+    screen.getByLabelText('받는 분 주소');
+    screen.getByLabelText('받는 분께 보내는 메세지');
+    screen.getByRole('button', '선물하기');
+  });
 });

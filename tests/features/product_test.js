@@ -39,7 +39,7 @@ Scenario('사용자가 로그인을 했고 잔액이 총 상품금액보다 클 
   I.see('구매수량');
   I.see('10,000원');
 
-  I.click('선물하기');
+  I.click('send-gift');
 
   I.see('받는 분 성함');
   I.see('받는 분 주소');
@@ -53,7 +53,7 @@ Scenario('사용자가 로그인을 하지 않고 선물하기를 누른 경우'
   I.see('구매수량');
   I.see('10,000원');
 
-  I.click('선물하기');
+  I.click('send-gift');
 
   I.see('USER LOGIN');
 });
@@ -65,7 +65,7 @@ Scenario(
 
     I.see('초콜릿');
 
-    I.click('선물하기');
+    I.click('send-gift');
 
     I.see('USER LOGIN');
 
@@ -89,7 +89,7 @@ Scenario('사용자가 로그인을 했고 잔액이 총 상품금액보다 작�
   I.see('구매수량');
   I.see('10,000원');
 
-  I.click('선물하기');
+  I.click('send-gift');
 
   I.see('❌잔액이 부족하여 선물하기가 불가합니다❌');
 });

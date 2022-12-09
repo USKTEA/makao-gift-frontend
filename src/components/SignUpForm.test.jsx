@@ -3,6 +3,10 @@ import {
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 
+import { ThemeProvider } from 'styled-components';
+
+import defaultTheme from '../styles/defaultTheme';
+
 import SignUpForm from './SignUpForm';
 
 const context = describe;
@@ -26,9 +30,11 @@ describe('SignUpForm', () => {
     context('when all signup inputs are correct', () => {
       it('create member information', async () => {
         render(
-          <MemoryRouter>
-            <SignUpForm />
-          </MemoryRouter>,
+          <ThemeProvider theme={defaultTheme}>
+            <MemoryRouter>
+              <SignUpForm />
+            </MemoryRouter>
+          </ThemeProvider>,
         );
 
         fireEvent.change(screen.getByLabelText('이름:'), {
@@ -60,10 +66,13 @@ describe('SignUpForm', () => {
     context('when have error with sign up', () => {
       it('dont create member information', () => {
         render(
-          <MemoryRouter>
-            <SignUpForm />
-          </MemoryRouter>,
+          <ThemeProvider theme={defaultTheme}>
+            <MemoryRouter>
+              <SignUpForm />
+            </MemoryRouter>
+          </ThemeProvider>,
         );
+
         fireEvent.click(screen.getByRole('button', { name: '회원가입' }));
 
         expect(signUp).not.toBeCalled();

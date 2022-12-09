@@ -1,7 +1,11 @@
 import {
   render, screen, fireEvent, waitFor,
 } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
+
 import OrderForm from './OrderForm';
+
+import defaultTheme from '../styles/defaultTheme';
 
 const navigate = jest.fn();
 
@@ -40,12 +44,16 @@ describe('OrderForm', () => {
 
   context('when fill fields correctly', () => {
     it('request order', async () => {
-      render(<OrderForm
-        addDeliveryInformation={addDeliveryInformation}
-        getSpecification={getSpecification}
-        createOrder={createOrder}
-        handlePayment={payFor}
-      />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <OrderForm
+            addDeliveryInformation={addDeliveryInformation}
+            getSpecification={getSpecification}
+            createOrder={createOrder}
+            handlePayment={payFor}
+          />
+        </ThemeProvider>,
+      );
 
       fireEvent.change(screen.getByLabelText('받는 분 성함'), {
         target: {
@@ -76,7 +84,6 @@ describe('OrderForm', () => {
         expect(getSpecification).toBeCalled();
         expect(createOrder).toBeCalled();
         expect(payFor).toBeCalled();
-        expect(navigate).toBeCalledWith('/orders');
       });
     });
   });
@@ -84,7 +91,11 @@ describe('OrderForm', () => {
   describe('recipient name field', () => {
     context('when did not filled recipient name field', () => {
       it('render order failed message', async () => {
-        render(<OrderForm />);
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <OrderForm />
+          </ThemeProvider>,
+        );
 
         fireEvent.change(screen.getByLabelText('받는 분 성함'), {
           target: {
@@ -101,7 +112,6 @@ describe('OrderForm', () => {
         fireEvent.click(screen.getByRole('button', '선물하기'));
 
         await waitFor(() => {
-          expect(navigate).not.toBeCalled();
           screen.getByText('성함을 입력해주세요');
         });
       });
@@ -109,8 +119,11 @@ describe('OrderForm', () => {
 
     context('when fill recipient name field with number', () => {
       it('render order failed message', async () => {
-        render(<OrderForm />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <OrderForm />
+          </ThemeProvider>,
+        );
         fireEvent.change(screen.getByLabelText('받는 분 성함'), {
           target: {
             value: '아샬1234',
@@ -126,7 +139,6 @@ describe('OrderForm', () => {
         fireEvent.click(screen.getByRole('button', '선물하기'));
 
         await waitFor(() => {
-          expect(navigate).not.toBeCalled();
           screen.getByText('이름을 다시 확인해주세요');
         });
       });
@@ -134,7 +146,11 @@ describe('OrderForm', () => {
 
     context('when fill recipient name field with none korean', () => {
       it('render order failed message', async () => {
-        render(<OrderForm />);
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <OrderForm />
+          </ThemeProvider>,
+        );
 
         fireEvent.change(screen.getByLabelText('받는 분 성함'), {
           target: {
@@ -151,7 +167,6 @@ describe('OrderForm', () => {
         fireEvent.click(screen.getByRole('button', '선물하기'));
 
         await waitFor(() => {
-          expect(navigate).not.toBeCalled();
           screen.getByText('이름을 다시 확인해주세요');
         });
       });
@@ -161,7 +176,11 @@ describe('OrderForm', () => {
       'when fill recipient name field less than two korean characters',
       () => {
         it('render order failed message', async () => {
-          render(<OrderForm />);
+          render(
+            <ThemeProvider theme={defaultTheme}>
+              <OrderForm />
+            </ThemeProvider>,
+          );
 
           fireEvent.change(screen.getByLabelText('받는 분 성함'), {
             target: {
@@ -178,7 +197,6 @@ describe('OrderForm', () => {
           fireEvent.click(screen.getByRole('button', '선물하기'));
 
           await waitFor(() => {
-            expect(navigate).not.toBeCalled();
             screen.getByText('이름을 다시 확인해주세요');
           });
         });
@@ -189,7 +207,11 @@ describe('OrderForm', () => {
       'when fill recipient name field more than seven korean characters',
       () => {
         it('shows only first seven characters', async () => {
-          render(<OrderForm />);
+          render(
+            <ThemeProvider theme={defaultTheme}>
+              <OrderForm />
+            </ThemeProvider>,
+          );
 
           fireEvent.change(screen.getByLabelText('받는 분 성함'), {
             target: {
@@ -214,7 +236,11 @@ describe('OrderForm', () => {
   describe('recipient address field', () => {
     context('when did not filled recipient address field', () => {
       it('render order failed message', async () => {
-        render(<OrderForm />);
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <OrderForm />
+          </ThemeProvider>,
+        );
 
         fireEvent.change(screen.getByLabelText('받는 분 성함'), {
           target: {
@@ -241,7 +267,11 @@ describe('OrderForm', () => {
   describe('message field', () => {
     context('when type more than 100 characters to message field', () => {
       it('only shows first 100 characters', () => {
-        render(<OrderForm />);
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <OrderForm />
+          </ThemeProvider>,
+        );
 
         fireEvent.change(screen.getByLabelText('받는 분께 보내는 메세지'), {
           target: {

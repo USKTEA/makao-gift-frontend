@@ -6,8 +6,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: #000;
+    color: black;
+    text-decoration: none;
   }
+
 `;
 
 export default GlobalStyle;

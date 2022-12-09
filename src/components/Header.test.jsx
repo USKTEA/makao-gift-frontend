@@ -17,6 +17,13 @@ jest.mock('react-router-dom', () => ({
   useNavigate() {
     return navigate;
   },
+  useLocation() {
+    return {
+      pathname: {
+        startsWith: jest.fn(),
+      },
+    };
+  },
 }));
 
 const clear = jest.fn();
