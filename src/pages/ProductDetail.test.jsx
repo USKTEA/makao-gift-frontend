@@ -1,5 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
+import { ThemeProvider } from 'styled-components';
+import defaultTheme from '../styles/defaultTheme';
 
 import ProductDetailPage from './ProductDetailPage';
 
@@ -9,11 +11,13 @@ describe('ProductDetailPage', () => {
   context('when pathname is /product/1', () => {
     it('show product detail which id is 1', async () => {
       render(
-        <MemoryRouter initialEntries={['/products/1']}>
-          <Routes>
-            <Route path="/products/:id" element={<ProductDetailPage />} />
-          </Routes>
-        </MemoryRouter>,
+        <ThemeProvider theme={defaultTheme}>
+          <MemoryRouter initialEntries={['/products/1']}>
+            <Routes>
+              <Route path="/products/:id" element={<ProductDetailPage />} />
+            </Routes>
+          </MemoryRouter>
+        </ThemeProvider>,
       );
 
       await waitFor(() => {
@@ -26,11 +30,13 @@ describe('ProductDetailPage', () => {
   context('when pathname is /product/2', () => {
     it('show product detail which id is 2', async () => {
       render(
-        <MemoryRouter initialEntries={['/products/2']}>
-          <Routes>
-            <Route path="/products/:id" element={<ProductDetailPage />} />
-          </Routes>
-        </MemoryRouter>,
+        <ThemeProvider theme={defaultTheme}>
+          <MemoryRouter initialEntries={['/products/2']}>
+            <Routes>
+              <Route path="/products/:id" element={<ProductDetailPage />} />
+            </Routes>
+          </MemoryRouter>
+        </ThemeProvider>,
       );
 
       await waitFor(() => {

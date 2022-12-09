@@ -8,9 +8,9 @@ module.exports = () => actor({
       .from({ length: amount }, (_, index) => index + 1)
       .reduce((acc, number) => [...acc, {
         id: number,
-        name: `상품${number}`,
-        manufacturer: 'test',
-        price: 10000,
+        name: '감사한 마음이 전달되는 선물',
+        manufacturer: 'Mindful',
+        price: Math.trunc(Math.random() * 10) * number * 1000 + 5000,
         description: `${number}번째 상품`,
         imageUrl: number,
       }], []);
@@ -54,13 +54,12 @@ module.exports = () => actor({
     this.see(amount);
     this.click('선물하기');
   },
-  async sendGiftTo({ recipient }) {
-    this.click('스토어');
-    this.click('초콜릿');
-    this.click('선물하기');
+  sendGiftTo({ recipient }) {
+    this.amOnPage('/products/1');
+    this.click('send-gift');
     this.fillField('받는 분 성함', recipient);
     this.fillField('받는 분 주소', '서울시 성동수 상원동');
-    this.click('선물하기');
+    this.click('[type=submit]');
   },
   logout() {
     this.click('로그아웃');

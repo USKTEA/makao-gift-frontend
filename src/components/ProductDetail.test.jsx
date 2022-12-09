@@ -1,8 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
 import ProductDetail from './ProductDetail';
 
+import defaultTheme from '../styles/defaultTheme';
+
 const navigate = jest.fn();
+
 jest.mock('react-router-dom', () => ({
   useNavigate() {
     return navigate;
@@ -53,7 +57,11 @@ describe('ProductDetail', () => {
 
   context('when render product detail page', () => {
     it('create order specification', () => {
-      render(<ProductDetail />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <ProductDetail />
+        </ThemeProvider>,
+      );
 
       expect(createSpecification).toBeCalled();
     });
@@ -62,8 +70,11 @@ describe('ProductDetail', () => {
   describe('click 선물하기', () => {
     context('when do not logged in', () => {
       it('navigate to login page', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         isLoggedIn.mockReturnValue(false);
 
         fireEvent.click(screen.getByText('선물하기'));
@@ -74,8 +85,11 @@ describe('ProductDetail', () => {
 
     context('when member can afford', () => {
       it('navigate to order page', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         isLoggedIn.mockReturnValue(true);
         canAfford.mockReturnValue(true);
 
@@ -87,8 +101,11 @@ describe('ProductDetail', () => {
 
     context('when member can not afford', () => {
       it('do not navigate to order page', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         isLoggedIn.mockReturnValue(true);
         canAfford.mockReturnValue(false);
 
@@ -103,8 +120,11 @@ describe('ProductDetail', () => {
   describe('modify order quantity', () => {
     context('when click increase button', () => {
       it('increase order quantity', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         fireEvent.click(screen.getByRole('button', { name: '+' }));
 
         expect(increaseQuantity).toBeCalled();
@@ -113,8 +133,11 @@ describe('ProductDetail', () => {
 
     context('when click decrease button', () => {
       it('decrease order quantity', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         fireEvent.click(screen.getByRole('button', { name: '-' }));
 
         expect(decreaseQuantity).toBeCalled();
@@ -123,8 +146,11 @@ describe('ProductDetail', () => {
 
     context('when type quantity directly', () => {
       it('reflect input number to order quantity', () => {
-        render(<ProductDetail />);
-
+        render(
+          <ThemeProvider theme={defaultTheme}>
+            <ProductDetail />
+          </ThemeProvider>,
+        );
         fireEvent.change(screen.getByLabelText('구매수량'), {
           target: {
             value: 10,

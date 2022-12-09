@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
 import SignUpPage from './SignUpPage';
+
+import defaultTheme from '../styles/defaultTheme';
 
 const navigate = jest.fn();
 
@@ -27,7 +30,11 @@ describe('SignUpPage', () => {
     it('navigate to homepage', () => {
       isLoggedIn.mockReturnValue(true);
 
-      render(<SignUpPage />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <SignUpPage />
+        </ThemeProvider>,
+      );
 
       expect(navigate).toBeCalledWith('/');
     });
@@ -35,7 +42,11 @@ describe('SignUpPage', () => {
     context('when did not log in', () => {
       isLoggedIn.mockReturnValue(false);
 
-      render(<SignUpPage />);
+      render(
+        <ThemeProvider theme={defaultTheme}>
+          <SignUpPage />
+        </ThemeProvider>,
+      );
 
       screen.getByText('SIGN UP');
     });

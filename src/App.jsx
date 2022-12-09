@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 import { Route, Routes } from 'react-router-dom';
 import { Reset } from 'styled-reset';
@@ -22,9 +22,17 @@ import OrderDetailPage from './pages/OrderDetailPage';
 
 import GlobalStyle from './styles/GlobalStyle';
 import useMemberStore from './hooks/useMemberStore';
+import defaultTheme from './styles/defaultTheme';
 
 const Main = styled.main`
-  padding-block: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  min-width: 1024px;
+  height: calc(100vh - 4em);
+  margin: 0 auto;
 `;
 
 export default function App() {
@@ -43,7 +51,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <ThemeProvider theme={defaultTheme}>
       <Reset />
       <GlobalStyle />
       <Header />
@@ -60,6 +68,6 @@ export default function App() {
           <Route path="/orders/:id" element={<OrderDetailPage />} />
         </Routes>
       </Main>
-    </>
+    </ThemeProvider>
   );
 }
