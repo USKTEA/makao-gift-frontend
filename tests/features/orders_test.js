@@ -27,6 +27,11 @@ Scenario('사용자가 주문한 내역이 있는 경우', ({ I }) => {
 
   I.sendGiftTo({ recipient: '김이박최아샬' });
 
+  I.logout();
+
+  I.login('ashal1234');
+
+  I.click('주문조회');
   I.see('내가 주문한 내역입니다');
   I.see('To. 김이박최아샬');
 });

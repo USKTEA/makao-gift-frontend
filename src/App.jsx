@@ -32,6 +32,7 @@ const Main = styled.main`
   max-width: 1400px;
   min-width: 1024px;
   height: calc(100vh - 4em);
+  min-height: 1000px;
   margin: 0 auto;
 `;
 
