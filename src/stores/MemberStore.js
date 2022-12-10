@@ -9,7 +9,8 @@ import Store from './Store';
 export default class MemberStore extends Store {
   constructor() {
     super();
-    this.member = '';
+
+    this.member = ''; // 이거 뭐 '' 빈문자열이 아닌걸로 대체 가능할까
     this.error = '';
   }
 
@@ -58,7 +59,7 @@ export default class MemberStore extends Store {
   }
 
   clear() {
-    this.member = '';
+    this.member = null;
 
     this.publish();
   }

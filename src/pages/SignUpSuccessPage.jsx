@@ -8,10 +8,6 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Form = styled.form`
-  width: 25em;
-`;
-
 const StyledLink = styled(Link)`
   font-size: 1em;
   font-weight: 700;

@@ -1,6 +1,7 @@
 import SignUpFormStore from './SignUpFormStore';
 
 const context = describe;
+
 describe('SignUpFormStore', () => {
   let signUpFormStore = '';
 
@@ -10,10 +11,10 @@ describe('SignUpFormStore', () => {
 
   describe('check error', () => {
     it('check if has error', () => {
-      signUpFormStore.changeName('xx');
-      signUpFormStore.changeMemberName('xxx');
-      signUpFormStore.changePassword('xx');
-      signUpFormStore.changeConfirmPassword('xx');
+      signUpFormStore.changeField({ name: 'xx' });
+      signUpFormStore.changeField({ memberName: 'xxx' });
+      signUpFormStore.changeField({ password: 'xxx' });
+      signUpFormStore.changeField({ confirmPassword: 'xx' });
 
       expect(signUpFormStore.hasError()).toBeTruthy();
     });
@@ -21,212 +22,210 @@ describe('SignUpFormStore', () => {
 
   describe('changeName', () => {
     it('change name', () => {
-      expect(signUpFormStore.name).toBe('');
+      expect(signUpFormStore.fields.name).toBe('');
 
-      signUpFormStore.changeName('김뚜루');
+      signUpFormStore.changeField({ name: '김뚜루' });
 
-      expect(signUpFormStore.name).toBe('김뚜루');
+      expect(signUpFormStore.fields.name).toBe('김뚜루');
     });
   });
 
   describe('changeMemberName', () => {
     it('change member name', () => {
-      expect(signUpFormStore.memberName).toBe('');
+      expect(signUpFormStore.fields.memberName).toBe('');
 
-      signUpFormStore.changeMemberName('ashal1234');
+      signUpFormStore.changeField({ memberName: 'ashal1234' });
 
-      expect(signUpFormStore.memberName).toBe('ashal1234');
+      expect(signUpFormStore.fields.memberName).toBe('ashal1234');
     });
   });
 
   describe('changePassword', () => {
     it('change password', () => {
-      expect(signUpFormStore.password).toBe('');
+      expect(signUpFormStore.fields.password).toBe('');
 
-      signUpFormStore.changePassword('Password1234!');
+      signUpFormStore.changeField({ password: 'Password1234!' });
 
-      expect(signUpFormStore.password).toBe('Password1234!');
+      expect(signUpFormStore.fields.password).toBe('Password1234!');
     });
   });
 
   describe('changeConfirmPassword', () => {
     it('change confirmPassword', () => {
-      expect(signUpFormStore.confirmPassword).toBe('');
+      expect(signUpFormStore.fields.confirmPassword).toBe('');
 
-      signUpFormStore.changeConfirmPassword('Password1234!');
+      signUpFormStore.changeField({ confirmPassword: 'Password1234!' });
 
-      expect(signUpFormStore.confirmPassword).toBe('Password1234!');
+      expect(signUpFormStore.fields.confirmPassword).toBe('Password1234!');
     });
   });
 
   describe('clear', () => {
     it('clear its fields', () => {
-      signUpFormStore.changeName('김뚜루');
-      signUpFormStore.changeMemberName('ashal1234');
-      signUpFormStore.changePassword('Password1234!');
-      signUpFormStore.changeConfirmPassword('Password1234!');
+      signUpFormStore.changeField({ name: '김뚜루' });
+      signUpFormStore.changeField({ memberName: 'ashal1234' });
+      signUpFormStore.changeField({ password: 'invalid' });
+      signUpFormStore.changeField({ confirmPassword: 'invalid' });
 
       signUpFormStore.clear();
 
-      expect(signUpFormStore.name).toBeFalsy();
-      expect(signUpFormStore.memberName).toBeFalsy();
-      expect(signUpFormStore.password).toBeFalsy();
-      expect(signUpFormStore.confirmPassword).toBeFalsy();
+      expect(signUpFormStore.fields).toEqual({});
+      expect(signUpFormStore.errors).toEqual({});
     });
   });
 
   describe('nameField', () => {
     context('when name is empty', () => {
       it('set nameField error', () => {
-        expect(signUpFormStore.nameFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.name).toBeFalsy();
 
-        signUpFormStore.changeName('');
+        signUpFormStore.changeField({ name: '' });
 
-        expect(signUpFormStore.nameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.name).toBeTruthy();
       });
     });
 
-    context('when name is too short', () => {
+    context('when name length is shorter than 3', () => {
       it('set nameField error', () => {
-        expect(signUpFormStore.nameFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.name).toBeFalsy();
 
-        signUpFormStore.changeName('김뚜');
+        signUpFormStore.changeField({ name: '김뚜' });
 
-        expect(signUpFormStore.nameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.name).toBeTruthy();
       });
     });
 
-    context('when name is too long', () => {
+    context('when name length is longer than 8', () => {
       it('set nameField error', () => {
-        expect(signUpFormStore.nameFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.name).toBeFalsy();
 
-        signUpFormStore.changeName('김뚜루빠라빠입니다');
+        signUpFormStore.changeField({ name: '김뚜루뚜빠라빠입니다' });
 
-        expect(signUpFormStore.nameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.name).toBeTruthy();
       });
     });
 
     context('when name include none korean', () => {
       it('set nameField error', () => {
-        expect(signUpFormStore.nameFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.name).toBeFalsy();
 
-        signUpFormStore.changeName('ahasal111');
+        signUpFormStore.changeField({ name: 'ashal1111' });
 
-        expect(signUpFormStore.nameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.name).toBeTruthy();
       });
     });
   });
 
   describe('memberName field', () => {
     context('when memberName is empty', () => {
-      it('set memberNameField error', () => {
-        expect(signUpFormStore.memberNameFieldError).toBeFalsy();
+      it('set memberNameField error', async () => {
+        expect(signUpFormStore.errors.memberName).toBeFalsy();
 
-        signUpFormStore.changeMemberName('');
+        await signUpFormStore.changeField({ memberName: '' });
 
-        expect(signUpFormStore.memberNameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.memberName).toBeTruthy();
       });
     });
 
     context('when memberName input incorrect', () => {
-      it('set memberNameField error', () => {
-        expect(signUpFormStore.memberNameFieldError).toBeFalsy();
+      it('set memberNameField error', async () => {
+        expect(signUpFormStore.errors.memberName).toBeFalsy();
 
-        signUpFormStore.changeMemberName('영문과소뭇자가아닌다른것');
+        await signUpFormStore.changeField({ memberName: '영문과소문자가아닌다른것' });
 
-        expect(signUpFormStore.memberNameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.memberName).toBeTruthy();
       });
     });
 
-    context('when memberName is too short', () => {
-      it('set memberNameField error', () => {
-        expect(signUpFormStore.memberNameFieldError).toBeFalsy();
+    context('when memberName length is shorter than 4', () => {
+      it('set memberNameField error', async () => {
+        expect(signUpFormStore.errors.memberName).toBeFalsy();
 
-        signUpFormStore.changeMemberName('as1');
+        await signUpFormStore.changeField({ memberName: 'as1' });
 
-        expect(signUpFormStore.memberNameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.memberName).toBeTruthy();
       });
     });
 
-    context('when memberName is too long', () => {
-      it('set memberNameField error', () => {
-        expect(signUpFormStore.memberNameFieldError).toBeFalsy();
+    context('when memberName length is longer than 16', () => {
+      it('set memberNameField error', async () => {
+        expect(signUpFormStore.errors.memberName).toBeFalsy();
 
-        signUpFormStore.changeMemberName('ahsalakajoker1234');
+        await signUpFormStore.changeField({ memberName: 'ashalakajocker1234' });
 
-        expect(signUpFormStore.memberNameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.memberName).toBeTruthy();
       });
     });
 
     context('when memberName is already in use', () => {
       it('set memberNameField error', async () => {
-        expect(signUpFormStore.memberNameFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.memberName).toBeFalsy();
 
-        await signUpFormStore.changeMemberName('inUse');
+        await signUpFormStore.changeField({ memberName: 'alreadyinuse1' });
 
-        expect(signUpFormStore.memberNameFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.memberName).toBeTruthy();
       });
     });
   });
 
   describe('password field', () => {
-    context('when password is too short', () => {
+    context('when password length is shorter than 8', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('Pass12!');
+        signUpFormStore.changeField({ password: 'Pass12!' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
 
     context('when password not contain lower character', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('PASSWORD1234!');
+        signUpFormStore.changeField({ password: 'PASSWORD1234!' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
 
     context('when password not contain upper character', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('password1234!');
+        signUpFormStore.changeField({ password: 'password1234!' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
 
     context('when password not contain number', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('password!!!!!');
+        signUpFormStore.changeField({ password: 'password!!!!!' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
 
     context('when password not contain special symbol', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('password1234');
+        signUpFormStore.changeField({ password: 'password1234' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
 
     context('when did not input password', () => {
       it('set passwordField error', () => {
-        expect(signUpFormStore.passwordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.password).toBeFalsy();
 
-        signUpFormStore.changePassword('');
+        signUpFormStore.changeField({ password: '' });
 
-        expect(signUpFormStore.passwordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.password).toBeTruthy();
       });
     });
   });
@@ -234,23 +233,23 @@ describe('SignUpFormStore', () => {
   describe('confirm password', () => {
     context('when password and confirmPassword are not equal', () => {
       it('set confirmPasswordField error', () => {
-        expect(signUpFormStore.confirmPasswordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.confirmPassword).toBeFalsy();
 
-        signUpFormStore.changePassword('Password1234!');
-        signUpFormStore.changeConfirmPassword('notPassword1234!');
+        signUpFormStore.changeField({ password: 'Password1234!' });
+        signUpFormStore.changeField({ confirmPassword: 'notPassword1234!' });
 
-        expect(signUpFormStore.confirmPasswordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.confirmPassword).toBeTruthy();
       });
     });
 
     context('when did not input confirmPassword', () => {
       it('set confirmPasswordField error', () => {
-        expect(signUpFormStore.confirmPasswordFieldError).toBeFalsy();
+        expect(signUpFormStore.errors.confirmPassword).toBeFalsy();
 
-        signUpFormStore.changePassword('Password1234!');
-        signUpFormStore.changeConfirmPassword('notPassword1234!');
+        signUpFormStore.changeField({ password: 'Password1234!' });
+        signUpFormStore.changeField({ confirmPassword: '' });
 
-        expect(signUpFormStore.confirmPasswordFieldError).toBeTruthy();
+        expect(signUpFormStore.errors.confirmPassword).toBeTruthy();
       });
     });
   });

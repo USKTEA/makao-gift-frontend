@@ -52,29 +52,13 @@ const DefaultMessage = styled.p`
   font-size: 15px;
 `;
 
-const SignupCompleted = styled(Container)`
-  h2 {
-    margin-bottom: 16px;
-    font-size: ${((props) => props.theme.size.h1)};
-    font-weight: 700;
-    text-align: center;
-  }
-  p {
-    margin-bottom: 40px;
-    font-size: ${((props) => props.theme.size.h5)};
-    text-align: center;
-  }
-`;
-
 export default function SignUpForm() {
   const navigate = useNavigate();
 
   const memberStore = useMemberStore();
   const signUpFormStore = useSignUpFormStore();
 
-  const {
-    name, memberName, password, confirmPassword,
-  } = signUpFormStore;
+  const { fields, errors } = signUpFormStore;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,7 +67,11 @@ export default function SignUpForm() {
       return;
     }
 
-    await memberStore.signUp({ name, memberName, password });
+    await memberStore.signUp({
+      name: fields.name,
+      memberName: fields.memberName,
+      password: fields.password,
+    });
 
     signUpFormStore.clear();
 
@@ -101,15 +89,16 @@ export default function SignUpForm() {
               id="input-name"
               type="text"
               name="name"
-              value={name}
-              error={signUpFormStore.nameFieldError}
-              onChange={(e) => signUpFormStore.changeName(e.target.value)}
+              value={fields.name}
+              error={errors.name}
+              onChange={(e) => signUpFormStore.changeField((
+                { name: e.target.value }))}
             />
-            {!signUpFormStore.nameFieldError
+            {!errors.name
               ? <DefaultMessage>3~7자까지 한글만 사용가능</DefaultMessage>
               : null }
-            {signUpFormStore.nameFieldError
-              ? (<ErrorMessage>{signUpFormStore.nameFieldError}</ErrorMessage>)
+            {errors.name
+              ? (<ErrorMessage>{errors.name}</ErrorMessage>)
               : null }
           </InputWrapper>
           <InputWrapper>
@@ -118,15 +107,16 @@ export default function SignUpForm() {
               id="input-member-name"
               type="text"
               name="memberName"
-              value={memberName}
-              error={signUpFormStore.memberNameFieldError}
-              onChange={(e) => signUpFormStore.changeMemberName(e.target.value)}
+              value={fields.memberName}
+              error={errors.memberName}
+              onChange={(e) => signUpFormStore.changeField((
+                { memberName: e.target.value }))}
             />
-            {!signUpFormStore.memberNameFieldError
+            {!errors.memberName
               ? <DefaultMessage>영문소문자/숫자,4~16자만 사용가능</DefaultMessage>
               : null }
-            {signUpFormStore.memberNameFieldError
-              ? (<ErrorMessage>{signUpFormStore.memberNameFieldError}</ErrorMessage>)
+            {errors.memberName
+              ? (<ErrorMessage>{errors.memberName}</ErrorMessage>)
               : null }
           </InputWrapper>
           <InputWrapper>
@@ -136,15 +126,16 @@ export default function SignUpForm() {
               type="password"
               name="password"
               autoComplete="password"
-              value={password}
-              error={signUpFormStore.passwordFieldError}
-              onChange={(e) => signUpFormStore.changePassword(e.target.value)}
+              value={fields.password}
+              error={errors.password}
+              onChange={(e) => signUpFormStore.changeField((
+                { password: e.target.value }))}
             />
-            {!signUpFormStore.passwordFieldError
+            {!errors.password
               ? (<DefaultMessage>8글자 이상의 영문(대소문자), 숫자, 특수문자가 모두 포함되어야 함</DefaultMessage>)
               : null }
-            {signUpFormStore.passwordFieldError
-              ? (<ErrorMessage>{signUpFormStore.passwordFieldError}</ErrorMessage>)
+            {errors.password
+              ? (<ErrorMessage>{errors.password}</ErrorMessage>)
               : null }
           </InputWrapper>
           <InputWrapper>
@@ -154,14 +145,15 @@ export default function SignUpForm() {
               type="password"
               name="confirmPassword"
               autoComplete="confirmPassword"
-              value={confirmPassword}
-              error={signUpFormStore.confirmPasswordFieldError}
+              value={fields.confirmPassword}
+              error={errors.confirmPassword}
               onChange={(e) => (
-                signUpFormStore.changeConfirmPassword(e.target.value)
+                signUpFormStore.changeField((
+                  { confirmPassword: e.target.value }))
               )}
             />
-            {signUpFormStore.confirmPasswordFieldError
-              ? (<ErrorMessage>{signUpFormStore.confirmPasswordFieldError}</ErrorMessage>)
+            {errors.confirmPassword
+              ? (<ErrorMessage>{errors.confirmPassword}</ErrorMessage>)
               : null }
           </InputWrapper>
         </Inputs>

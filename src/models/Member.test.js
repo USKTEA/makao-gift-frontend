@@ -3,20 +3,19 @@ import Member from './Member';
 const context = describe;
 
 describe('Member', () => {
-  let member = '';
-  beforeEach(() => {
-    member = new Member({ name: '김아샬', amount: 50_000 });
-  });
+  let member = null;
 
   context('when member have enough amount', () => {
     it('can afford order', () => {
+      member = new Member({ name: '김아샬', amount: 50_000 });
       expect(member.canAfford({ cost: 10_000 })).toBeTruthy();
     });
   });
 
-  context('when member dont have enough amount', () => {
-    it('can not afford order', () => {
-      expect(member.canAfford({ cost: member.amount + 10_000 })).toBeFalsy();
+  context('when member don\'t have enough amount', () => {
+    it('cannot afford order', () => {
+      member = new Member({ name: '김아샬', amount: 0 });
+      expect(member.canAfford({ cost: 10_000 })).toBeFalsy();
     });
   });
 });

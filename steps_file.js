@@ -19,6 +19,7 @@ module.exports = () => actor({
       products,
     });
   },
+
   async setUpProduct({
     id, name, manufacturer, price, description, imageUrl,
   }) {
@@ -26,12 +27,15 @@ module.exports = () => actor({
       id, name, manufacturer, price, description, imageUrl,
     });
   },
+
   async clearDatabase() {
     await this.sendDeleteRequest('/clear-database');
   },
+
   async setUpUser() {
     await this.sendPostRequest('/setup-user');
   },
+
   login(userName) {
     this.amOnPage('/');
     this.click('로그인');
@@ -42,6 +46,7 @@ module.exports = () => actor({
 
     this.waitForText('로그아웃');
   },
+
   changeAmount({ memberId, amount }) {
     this.amOnPage([
       `${backdoorBaseUrl}/change-amount?`,
@@ -49,11 +54,13 @@ module.exports = () => actor({
     ].join(''));
     this.amOnPage('/');
   },
+
   choose({ productName, amount }) {
     this.click(productName);
     this.see(amount);
     this.click('선물하기');
   },
+
   sendGiftTo({ recipient }) {
     this.amOnPage('/products/1');
     this.click('send-gift');
@@ -61,6 +68,7 @@ module.exports = () => actor({
     this.fillField('받는 분 주소', '서울시 성동수 상원동');
     this.click('[type=submit]');
   },
+
   logout() {
     this.click('로그아웃');
   },
