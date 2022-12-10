@@ -41,8 +41,10 @@ describe('SignUpForm', () => {
           target: { value: '김이박최아샬' },
         });
 
-        fireEvent.change(screen.getByLabelText('아이디:'), {
-          target: { value: 'ashal12345' },
+        await waitFor(() => {
+          fireEvent.change(screen.getByLabelText('아이디:'), {
+            target: { value: 'ashal12345' },
+          });
         });
 
         fireEvent.change(screen.getByLabelText('비밀번호:'), {
@@ -56,6 +58,7 @@ describe('SignUpForm', () => {
         fireEvent.click(screen.getByRole('button', { name: '회원가입' }));
 
         await waitFor(() => {
+          expect(screen.getByText('해당 아이디는 사용할 수 없습니다')).toBeFalsy();
           expect(navigate).toBeCalledWith('/signup-success');
         });
       });

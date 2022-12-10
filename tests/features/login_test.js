@@ -43,7 +43,7 @@ Scenario('사용자가 잘못된 아이디를 입력했을 경우', ({ I }) => {
 
   I.see('로그인하기');
 
-  I.fillField('아이디', 'xxx');
+  I.fillField('아이디', 'notexits1234');
   I.fillField('비밀번호', 'Password1234!');
   I.click('[type=submit]');
 
@@ -60,7 +60,7 @@ Scenario('사용자가 잘못된 비밀번호를 입력했을 경우', ({ I }) =
   I.see('로그인하기');
 
   I.fillField('아이디', 'ashal1234');
-  I.fillField('비밀번호', 'xxx');
+  I.fillField('비밀번호', 'Incorrect123!');
   I.click('[type=submit]');
 
   I.see('아이디 혹은 비밀번호가 맞지 않습니다');

@@ -159,7 +159,7 @@ const server = setupServer(
     const countOnly = req.url.searchParams.get('countOnly');
     const memberName = req.url.searchParams.get('memberName');
 
-    if (countOnly && memberName === 'inUse') {
+    if (countOnly && memberName === 'alreadyinuse1') {
       return res(ctx.json({
         count: 1,
       }));

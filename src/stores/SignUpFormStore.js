@@ -5,137 +5,97 @@ export default class SignUpFormStore extends Store {
   constructor() {
     super();
 
-    this.name = '';
-    this.memberName = '';
-    this.password = '';
-    this.confirmPassword = '';
+    this.fields = {
+      name: '',
+      memberName: '',
+      password: '',
+      confirmPassword: '',
+    };
 
-    this.nameFieldError = '';
-    this.memberNameFieldError = '';
-    this.passwordFieldError = '';
-    this.confirmPasswordFieldError = '';
+    this.errors = {
+      name: '',
+      memberName: '',
+      password: '',
+      confirmPassword: '',
+    };
+
+    this.errorMessages = {
+      name: { empty: '이름을 입력해주세요', invalid: '이름을 다시 확인해주세요' },
+      memberName: {
+        empty: '아이디를 입력해주세요',
+        invalid: '아이디를 다시 확인해주세요',
+        inUse: '해당 아이디는 사용할 수 없습니다',
+      },
+      password: {
+        empty: '비밀번호를 입력해주세요',
+        invalid: '비밀번호를 다시 확인해주세요',
+      },
+      confirmPassword: {
+        empty: '비밀번호를 입력해주세요',
+        invalid: '비밀번호가 일치하지 않습니다',
+      },
+    };
+
+    this.patterns = {
+      name: /^[ㄱ-ㅎㅏ-ㅣ가-힣]{3,7}$/g,
+      memberName: /^[a-z|0-9]{4,16}$/,
+      password: /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}/,
+    };
   }
 
-  changeName(name) {
-    this.name = name;
+  async changeField(field) {
+    const key = Object.keys(field)[0];
 
-    this.validateName();
+    this.fields = { ...this.fields, ...field };
+
+    await this.validate(key);
 
     this.publish();
   }
 
-  async changeMemberName(memberName) {
-    this.memberName = memberName;
-
-    await this.validateMemberName();
-
-    this.publish();
-  }
-
-  changePassword(password) {
-    this.password = password;
-
-    this.validatePassword();
-
-    this.publish();
-  }
-
-  changeConfirmPassword(confirmPassword) {
-    this.confirmPassword = confirmPassword;
-
-    this.validateConfirmPassword();
-
-    this.publish();
-  }
-
-  validateName() {
-    const pattern = /^[ㄱ-ㅎㅏ-ㅣ가-힣]{3,7}$/g;
-
-    if (!this.name) {
-      this.nameFieldError = '이름을 입력해주세요';
+  async validate(field) {
+    if (!this.fields[field]) {
+      this.errors[field] = this.errorMessages[field].empty;
 
       return;
     }
 
-    if (!pattern.test(this.name)) {
-      this.nameFieldError = '이름을 다시 확인해주세요';
+    if (field === 'confirmPassword') {
+      if (this.fields.password !== this.fields[field]) {
+        this.errors[field] = this.errorMessages[field].invalid;
+
+        return;
+      }
+
+      this.errors[field] = '';
+      return;
+    }
+
+    const pattern = this.patterns[field];
+
+    if (!pattern.test(this.fields[field])) {
+      this.errors[field] = this.errorMessages[field].invalid;
 
       return;
     }
 
-    this.nameFieldError = '';
-  }
+    if (field === 'memberName') {
+      const { count } = await apiService.countMember(this.fields[field]);
 
-  async validateMemberName() {
-    const pattern = /^[a-z|0-9]{4,16}$/;
+      if (count) {
+        this.errors[field] = this.errorMessages[field].inUse;
 
-    if (!this.memberName) {
-      this.memberNameFieldError = '아이디를 입력해주세요';
-
-      return;
+        return;
+      }
     }
 
-    if (!pattern.test(this.memberName)) {
-      this.memberNameFieldError = '아이디를 다시 확인해주세요';
-
-      return;
-    }
-
-    const { count } = await apiService.countMember(this.memberName);
-
-    if (count) {
-      this.memberNameFieldError = '해당 아이디는 사용할 수 없습니다';
-
-      return;
-    }
-
-    this.memberNameFieldError = '';
-  }
-
-  validatePassword() {
-    const pattern = /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}/;
-
-    if (!this.password) {
-      this.passwordFieldError = '비밀번호를 입력해주세요';
-
-      return;
-    }
-
-    if (!pattern.test(this.password)) {
-      this.passwordFieldError = '비밀번호를 다시 확인해주세요';
-
-      return;
-    }
-
-    this.passwordFieldError = '';
-  }
-
-  validateConfirmPassword() {
-    if (!this.changeConfirmPassword) {
-      this.confirmPasswordFieldError = '비멀번호를 입력해주세요';
-
-      return;
-    }
-
-    if (this.confirmPassword !== this.password) {
-      this.confirmPasswordFieldError = '비밀번호가 일치하지 않습니다';
-
-      return;
-    }
-
-    this.confirmPasswordFieldError = '';
+    this.errors[field] = '';
   }
 
   hasError() {
-    this.validateName();
-    this.validateMemberName();
-    this.validatePassword();
-    this.validateConfirmPassword();
+    const errors = Object.values(this.errors).join('');
 
-    if (this.nameFieldError || this.memberNameFieldError
-      || this.passwordFieldError || this.confirmPasswordFieldError) {
-      this.publish();
-
+    if (errors.length) {
       return true;
     }
 
@@ -143,15 +103,8 @@ export default class SignUpFormStore extends Store {
   }
 
   clear() {
-    this.name = '';
-    this.memberName = '';
-    this.password = '';
-    this.confirmPassword = '';
-
-    this.nameFieldError = '';
-    this.memberNameFieldError = '';
-    this.passwordFieldError = '';
-    this.confirmPasswordFieldError = '';
+    this.fields = {};
+    this.errors = {};
   }
 }
 
